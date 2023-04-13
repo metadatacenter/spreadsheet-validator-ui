@@ -11,9 +11,12 @@ import { RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
+  const handleBatchIconClick = () => {
+    setStaleBatch(false);
+  };
   const handleKeyPress = (event) => {
+    setBatchInput(event.target.value);
     if (event.key === 'Enter') {
-      setBatchInput(event.target.value);
       setStaleBatch(false);
       event.preventDefault();
     }
@@ -36,10 +39,11 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               key={`${id}-searchable-selector`}
               placeholder="Enter batch value..."
               options={permissibleValues}
+              onChange={handleKeyPress}
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
-                  <KeyboardReturnIcon />
+                  <KeyboardReturnIcon style={{ cursor: 'pointer' }} onClick={handleBatchIconClick} />
                 </InputAdornment>
               )}
             />
@@ -49,10 +53,11 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               key={`${id}-input-field`}
               type={type}
               placeholder="Enter batch value..."
+              onChange={handleKeyPress}
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
-                  <KeyboardReturnIcon />
+                  <KeyboardReturnIcon style={{ cursor: 'pointer' }} onClick={handleBatchIconClick} />
                 </InputAdornment>
               )}
             />
