@@ -1,4 +1,4 @@
-import { FormControl, InputAdornment, Stack } from '@mui/material';
+import { FormControl, InputAdornment, IconButton, Stack } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
@@ -43,7 +43,9 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
-                  <KeyboardReturnIcon style={{ cursor: 'pointer' }} onClick={handleBatchIconClick} />
+                  <IconButton edge="end" onClick={handleBatchIconClick}>
+                    <KeyboardReturnIcon />
+                  </IconButton>
                 </InputAdornment>
               )}
             />
@@ -57,7 +59,9 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
-                  <KeyboardReturnIcon style={{ cursor: 'pointer' }} onClick={handleBatchIconClick} />
+                  <IconButton edge="end" onClick={handleBatchIconClick}>
+                    <KeyboardReturnIcon />
+                  </IconButton>
                 </InputAdornment>
               )}
             />
