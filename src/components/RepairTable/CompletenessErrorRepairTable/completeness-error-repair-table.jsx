@@ -71,6 +71,10 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
           rows.forEach((row) => { prevUserInput[row] = batchInput; });
         });
       }
+      // When staleBatch is true, it will prevent this effect hook
+      // to update the field value with the batch input because it
+      // may not be the final string (e.g., user is still typing or
+      // the string is not one of the permissible values to enter).
       return () => setStaleBatch(true);
     },
     [filteredData, batchInput, staleBatch],
