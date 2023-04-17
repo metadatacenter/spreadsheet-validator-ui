@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { FormControl, InputAdornment, IconButton, Stack } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -11,12 +12,23 @@ import { RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
-  const handleBatchIconClick = () => {
+  const [value, setValue] = useState('');
+  const handleSelectionChange = (event) => {
+    setValue(event.target.outerText);
+    event.preventDefault();
+  };
+  const handleInputChange = (event) => {
+    setValue(event.target.value);
+    event.preventDefault();
+  };
+  const handleBatchIconClick = (event) => {
+    setBatchInput(value);
     setStaleBatch(false);
+    event.preventDefault();
   };
   const handleKeyPress = (event) => {
-    setBatchInput(event.target.value);
     if (event.key === 'Enter') {
+      setBatchInput(value);
       setStaleBatch(false);
       event.preventDefault();
     }
@@ -38,8 +50,9 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
             <SearchableSelector
               key={`${id}-searchable-selector`}
               placeholder="Enter batch value..."
+              value={value}
               options={permissibleValues}
-              onChange={handleKeyPress}
+              onChange={handleSelectionChange}
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
@@ -55,7 +68,8 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               key={`${id}-input-field`}
               type={type}
               placeholder="Enter batch value..."
-              onChange={handleKeyPress}
+              value={value}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
