@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { WHITE } from '../../../constants/Color';
 
 // eslint-disable-next-line max-len
-const SearchableSelector = ({ placeholder, value, options, onChange, onKeyPress, colorOnEmpty, startAdornment, endAdornment }) => (
+const SearchableSelector = ({ placeholder, value, options, onChange, onKeyPress, onHighlightChange, colorOnEmpty, startAdornment, endAdornment }) => (
   <Autocomplete
     value={value}
     forcePopupIcon={false}
@@ -11,7 +11,9 @@ const SearchableSelector = ({ placeholder, value, options, onChange, onKeyPress,
     options={options}
     onChange={onChange}
     onKeyPress={onKeyPress}
+    onHighlightChange={onHighlightChange}
     sx={{ backgroundColor: value === '' ? colorOnEmpty : WHITE }}
+    isOptionEqualToValue={(option, input) => option === input}
     renderInput={(params) => (
       <TextField
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -44,6 +46,7 @@ SearchableSelector.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
+  onHighlightChange: PropTypes.func,
   colorOnEmpty: PropTypes.string,
   startAdornment: PropTypes.element,
   endAdornment: PropTypes.element,
@@ -54,6 +57,7 @@ SearchableSelector.defaultProps = {
   value: undefined,
   onChange: undefined,
   onKeyPress: undefined,
+  onHighlightChange: undefined,
   colorOnEmpty: WHITE,
   startAdornment: undefined,
   endAdornment: undefined,

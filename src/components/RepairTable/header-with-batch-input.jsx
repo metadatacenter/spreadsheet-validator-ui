@@ -15,6 +15,11 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
   const [value, setValue] = useState('');
   const handleSelectionChange = (event) => {
     setValue(event.target.outerText);
+  };
+  const handleHighlightChange = (event, option, reason) => {
+    if (option && reason === 'keyboard') {
+      setValue(option);
+    }
     event.preventDefault();
   };
   const handleInputChange = (event) => {
@@ -54,6 +59,7 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               options={permissibleValues}
               onChange={handleSelectionChange}
               onKeyPress={handleKeyPress}
+              onHiglightChange={handleHighlightChange}
               endAdornment={(
                 <InputAdornment position="end">
                   <IconButton edge="end" onClick={handleBatchIconClick}>
