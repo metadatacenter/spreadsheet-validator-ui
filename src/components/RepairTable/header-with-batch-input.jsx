@@ -13,8 +13,9 @@ import { RED } from '../../constants/Color';
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
   const [value, setValue] = useState('');
-  const handleSelectionChange = (event) => {
-    setValue(event.target.outerText);
+  const handleSelectionChange = (event, input) => {
+    setValue(input);
+    event.preventDefault();
   };
   const handleHighlightChange = (event, option, reason) => {
     if (option && reason === 'keyboard') {
