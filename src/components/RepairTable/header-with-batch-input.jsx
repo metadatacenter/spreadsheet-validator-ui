@@ -1,4 +1,5 @@
-import { FormControl, InputAdornment, Stack } from '@mui/material';
+import { useState } from 'react';
+import { FormControl, InputAdornment, IconButton, Stack } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
@@ -11,9 +12,29 @@ import { RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
+  const [value, setValue] = useState('');
+  const handleSelectionChange = (event, input) => {
+    setValue(input);
+    event.preventDefault();
+  };
+  const handleHighlightChange = (event, option, reason) => {
+    if (option && reason === 'keyboard') {
+      setValue(option);
+    }
+    event.preventDefault();
+  };
+  const handleInputChange = (event) => {
+    setValue(event.target.value);
+    event.preventDefault();
+  };
+  const handleBatchIconClick = (event) => {
+    setBatchInput(value);
+    setStaleBatch(false);
+    event.preventDefault();
+  };
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      setBatchInput(event.target.value);
+      setBatchInput(value);
       setStaleBatch(false);
       event.preventDefault();
     }
@@ -35,11 +56,16 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
             <SearchableSelector
               key={`${id}-searchable-selector`}
               placeholder="Enter batch value..."
+              value={value}
               options={permissibleValues}
+              onChange={handleSelectionChange}
               onKeyPress={handleKeyPress}
+              onHiglightChange={handleHighlightChange}
               endAdornment={(
                 <InputAdornment position="end">
-                  <KeyboardReturnIcon />
+                  <IconButton edge="end" onClick={handleBatchIconClick}>
+                    <KeyboardReturnIcon />
+                  </IconButton>
                 </InputAdornment>
               )}
             />
@@ -49,10 +75,14 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
               key={`${id}-input-field`}
               type={type}
               placeholder="Enter batch value..."
+              value={value}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               endAdornment={(
                 <InputAdornment position="end">
-                  <KeyboardReturnIcon />
+                  <IconButton edge="end" onClick={handleBatchIconClick}>
+                    <KeyboardReturnIcon />
+                  </IconButton>
                 </InputAdornment>
               )}
             />
