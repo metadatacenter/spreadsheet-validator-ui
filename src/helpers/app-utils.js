@@ -266,11 +266,17 @@ export const applyPatches = (data, patches) => {
 };
 
 export const generateNewSpreadsheet = (repairedData, staticSheets) => {
-  const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const wb = utils.book_new();
+
+  // The main metadata sheet
+  const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const main = utils.json_to_sheet(finalData);
   utils.book_append_sheet(wb, main, 'MAIN');
-  Object.keys(staticSheets).forEach((sheetName) => {
+
+  // The other static sheets
+  // eslint-disable-next-line no-unused-vars
+  const staticSheetNames = Object.keys(staticSheets);
+  staticSheetNames.forEach((sheetName) => {
     const ss = utils.json_to_sheet(staticSheets[sheetName]);
     utils.book_append_sheet(wb, ss, sheetName);
   });

@@ -122,7 +122,7 @@ const Home = ({ setAppData }) => {
       const staticSheetNames = workbook.SheetNames.slice(1);
       const staticSheetObjects = staticSheetNames.reduce((collector, name) => ({
         ...collector,
-        [name]: workbook.Sheets[name],
+        [name]: utils.sheet_to_json(workbook.Sheets[name], { defval: '' }),
       }), {});
       setStaticSheets(staticSheetObjects);
     };
