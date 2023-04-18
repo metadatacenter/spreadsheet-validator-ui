@@ -1,19 +1,9 @@
 import { useContext } from 'react';
-import { AppBar, Container, Slide, styled, Toolbar } from '@mui/material';
+import { SpeedDial, SpeedDialAction } from '@mui/material';
+import DownloadIcon from '@mui/icons-material/Download';
+import SaveIcon from '@mui/icons-material/Save';
 import AppContext from '../../pages/AppContext';
-import BaseButton from '../../styles/BaseButton';
 import { applyPatches, generateNewCsv, generateNewSpreadsheet } from '../../helpers/app-utils';
-import { WHITE, LIME, LIGHT_LIME } from '../../constants/Color';
-
-const GenerateButton = styled(BaseButton)({
-  width: '360px',
-  variant: 'contained',
-  backgroundColor: LIGHT_LIME,
-  color: WHITE,
-  '&:hover': {
-    backgroundColor: LIME,
-  },
-});
 
 const GenerateSpreadsheetButton = () => {
   const { appData, patches } = useContext(AppContext);
@@ -21,29 +11,33 @@ const GenerateSpreadsheetButton = () => {
   const { staticSheets } = otherProps;
 
   return (
-    <Slide appear={false} direction="up" in="false">
-      <AppBar position="fixed" component="div" color="primary" sx={{ top: 'auto', bottom: 0 }}>
-        <Container
-          maxWidth="xl"
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Toolbar disableGutters>
-            <GenerateButton onClick={() => {
-              const repairedData = applyPatches(data, patches);
-              generateNewCsv(repairedData);
-              generateNewSpreadsheet(repairedData, staticSheets);
-            }}
-            >
-              Generate Repaired Spreadsheet
-            </GenerateButton>
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Slide>
+    <SpeedDial
+      ariaLabel="Generate repaired table data"
+      icon={<DownloadIcon />}
+      direction="up"
+      sx={{ position: 'fixed', bottom: 32, right: 36 }}
+    >
+      <SpeedDialAction
+        key="generated-xlsx"
+        icon={<SaveIcon />}
+        tooltipTitle="Download Excel file"
+        tooltipOpen
+        onClick={() => {
+          const repairedData = applyPatches(data, patches);
+          generateNewSpreadsheet(repairedData, staticSheets);
+        }}
+      />
+      <SpeedDialAction
+        key="generated-csv"
+        icon={<SaveIcon />}
+        tooltipTitle="Download CSV file"
+        tooltipOpen
+        onClick={() => {
+          const repairedData = applyPatches(data, patches);
+          generateNewCsv(repairedData);
+        }}
+      />
+    </SpeedDial>
   );
 };
 
