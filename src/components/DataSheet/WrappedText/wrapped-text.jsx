@@ -6,7 +6,7 @@ const CellValue = styled(Typography)({
 });
 
 const WrappedText = ({ text, color }) => {
-  if (text.length <= 30) {
+  if (text && text.length <= 30) {
     return (<CellValue color={color}>{text}</CellValue>);
   }
   return (

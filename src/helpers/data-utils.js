@@ -94,8 +94,10 @@ export const getPatchValue = (row, column, patches) => getPatch(row, column, pat
 
 export const getEffectiveValue = (row, column, data, patches) => {
   // eslint-disable-next-line dot-notation
-  let value = getPatchValue(row, column, patches);
-  if (!value) {
+  let value;
+  if (patches[row][column]) {
+    value = getPatchValue(row, column, patches);
+  } else {
     value = getDataValue(row, column, data);
   }
   return value;

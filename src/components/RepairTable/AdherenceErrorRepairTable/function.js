@@ -7,11 +7,11 @@ export const initUserInput = (tableData, patches) => (
     ...accumulator,
     [rowData.id]: {
       column: rowData.column,
-      value: getPatchValue(
+      value: patches[rowData.rows[0]][rowData.column] ? getPatchValue(
         rowData.rows[0], // select first item
         rowData.column,
         patches,
-      ) || rowData.repairSuggestion,
+      ) : rowData.repairSuggestion,
       rows: rowData.rows,
       approved: checkRepairPatchPresent(rowData.rows[0], rowData.column, patches),
     },
