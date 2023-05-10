@@ -42,7 +42,7 @@ export const FooterPanel = styled(Flex)({
 
 export const CancelButton = styled(BaseButton)({
   backgroundColor: WHITE,
-  width: '220px',
+  width: '240px',
 });
 
 export const SaveButton = styled(BaseButton)({
