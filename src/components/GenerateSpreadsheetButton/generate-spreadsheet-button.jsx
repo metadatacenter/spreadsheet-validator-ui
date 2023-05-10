@@ -1,7 +1,8 @@
 import { useContext } from 'react';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import SaveIcon from '@mui/icons-material/Save';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileExcel, faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import AppContext from '../../pages/AppContext';
 import { applyPatches, generateNewCsv, generateNewSpreadsheet } from '../../helpers/app-utils';
 
@@ -19,22 +20,36 @@ const GenerateSpreadsheetButton = () => {
     >
       <SpeedDialAction
         key="generated-xlsx"
-        icon={<SaveIcon />}
-        tooltipTitle="Download Excel file"
-        tooltipOpen
+        icon={<FontAwesomeIcon icon={faFileExcel} size="xl" />}
+        title="Save to Excel"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
           generateNewSpreadsheet(repairedData, staticSheets);
         }}
+        sx={{ width: 45, height: 45 }}
+        componentsProps={{
+          tooltip: {
+            sx: {
+              fontSize: '1em',
+            },
+          },
+        }}
       />
       <SpeedDialAction
         key="generated-csv"
-        icon={<SaveIcon />}
-        tooltipTitle="Download CSV file"
-        tooltipOpen
+        icon={<FontAwesomeIcon icon={faFileCsv} size="xl" />}
+        title="Save to CSV"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
           generateNewCsv(repairedData);
+        }}
+        sx={{ width: 45, height: 45 }}
+        componentsProps={{
+          tooltip: {
+            sx: {
+              fontSize: '1em',
+            },
+          },
         }}
       />
     </SpeedDial>
