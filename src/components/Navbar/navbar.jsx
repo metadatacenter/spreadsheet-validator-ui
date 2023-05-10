@@ -1,4 +1,5 @@
 import { AppBar, Box, Toolbar, Typography, Container } from '@mui/material';
+import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import CompletenessErrorNavMenu from '../NavMenu/CompletenessErrorNavMenu';
 import AdherenceErrorNavMenu from '../NavMenu/AdherenceErrorNavMenu';
 import OverviewNavMenu from '../NavMenu/OverviewNavMenu';
@@ -7,6 +8,7 @@ const Navbar = () => (
   <AppBar component="nav" position="sticky">
     <Container maxWidth="xl">
       <Toolbar disableGutters>
+        <BuildCircleIcon sx={{ paddingRight: 1 }} />
         <Typography
           variant="h6"
           noWrap
