@@ -6,7 +6,8 @@ import SearchableSelector from '../DataSheet/SearchableSelector';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME } from '../../constants/ValueType';
 
-const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, onSave }) => (
+// eslint-disable-next-line max-len
+const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, onSave, highlightEmpty }) => (
   <SheetCell sx={{ zIndex: sticky ? 998 : 0 }} sticky={sticky}>
     <FormControl fullWidth>
       {permissibleValues && permissibleValues.length > 0
@@ -17,7 +18,7 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
             onChange={(event, newValue) => {
               onSave(newValue);
             }}
-            colorOnEmpty={LIGHT_RED}
+            colorOnEmpty={highlightEmpty ? LIGHT_RED : ''}
           />
         )
         : (
@@ -29,7 +30,7 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
               const newValue = event.target.value;
               onSave(newValue);
             }}
-            colorOnEmpty={LIGHT_RED}
+            colorOnEmpty={highlightEmpty ? LIGHT_RED : ''}
           />
         )}
     </FormControl>
@@ -43,6 +44,7 @@ EditableSheetCell.propTypes = {
   sticky: PropTypes.bool,
   inputRef: PropTypes.oneOfType([PropTypes.object]),
   onSave: PropTypes.func.isRequired,
+  highlightEmpty: PropTypes.bool,
 };
 
 EditableSheetCell.defaultProps = {
@@ -50,6 +52,7 @@ EditableSheetCell.defaultProps = {
   permissibleValues: undefined,
   inputRef: undefined,
   sticky: false,
+  highlightEmpty: true,
 };
 
 export default EditableSheetCell;

@@ -87,6 +87,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
               };
             });
           }}
+          highlightEmpty={required || (!required && !userInput[id]?.approved)}
         />
         <SheetCell key={`approved-cell-${id}`} align="center">
           <Checkbox
@@ -97,7 +98,8 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
                 // eslint-disable-next-line no-param-reassign
                 currentUserInput[id] = {
                   column: targetColumn,
-                  value: userInput[id].value,
+                  // if value is undefined, should be replaced with null to create a patch
+                  value: userInput[id].value || null,
                   rows,
                   approved,
                 };

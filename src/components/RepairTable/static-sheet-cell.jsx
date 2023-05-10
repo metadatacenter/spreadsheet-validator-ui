@@ -18,7 +18,7 @@ const StaticSheetCell = ({ value, color, backgroundColor, textAlign, minWidth, s
 );
 
 StaticSheetCell.propTypes = {
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]),
   color: PropTypes.string,
   backgroundColor: PropTypes.string,
   textAlign: PropTypes.string,
@@ -27,6 +27,7 @@ StaticSheetCell.propTypes = {
 };
 
 StaticSheetCell.defaultProps = {
+  value: '',
   sticky: false,
   color: BLACK,
   backgroundColor: WHITE,
