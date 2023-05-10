@@ -106,7 +106,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
         </Block>
         <Block textAlign="center" sx={{ paddingTop: '30px' }}>
           <BaseButton
-            sx={{ width: '310px' }}
+            sx={{ width: '330px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasCompletenessErrors}
             onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`)}
@@ -114,7 +114,7 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
             Repair Completeness Errors
           </BaseButton>
           <BaseButton
-            sx={{ width: '310px' }}
+            sx={{ width: '330px' }}
             variant="contained"
             disabled={!evaluationSummaryData.hasAdherenceErrors}
             onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`)}
