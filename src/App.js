@@ -38,6 +38,7 @@ const LandingPageContainer = () => (
       >
         Help
       </Button>
+      <Button component="div" disabled>UI Version: 1.1.0</Button>
     </Stack>
     <Outlet />
   </Stack>
