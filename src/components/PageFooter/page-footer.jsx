@@ -25,7 +25,7 @@ const PageFooter = () => (
       Copyright @ 2023 The Board of Trustees of Leland Stanford Junior University
     </Block>
     <Block>
-      <a href="https://github.com/hubmapconsortium/spreadsheet-validator-ui" target="_blank" rel="noreferrer">
+      <a href="https://github.com/metadatacenter/spreadsheet-validator-ui" target="_blank" rel="noreferrer">
         <img
           src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           alt="GitHub logo"
