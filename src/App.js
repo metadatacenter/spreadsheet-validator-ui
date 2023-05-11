@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
-import { BrowserRouter as Router, Routes, Route, Outlet, Link } from 'react-router-dom';
-import { Stack, styled } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
+import { Stack, Button, styled } from '@mui/material';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import PropTypes from 'prop-types';
 import './App.css';
 import Home from './pages/Home';
-import About from './pages/About';
-import Help from './pages/Help';
 import Overview from './pages/Overview';
 import CompletenessErrorOverview from './pages/CompletenessErrorOverview';
 import AdherenceErrorOverview from './pages/AdherenceErrorOverview';
@@ -19,38 +18,26 @@ import ContentArea from './components/ContentArea';
 import PageFooter from './components/PageFooter';
 import GenerateSpreadsheetButton from './components/GenerateSpreadsheetButton';
 import { generateEmptyObjects } from './helpers/array-utils';
-import { ABOUT_PATH, HELP_PATH, HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from './constants/Router';
-import { BLACK, LIGHTER_GRAY } from './constants/Color';
+import { HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from './constants/Router';
+import { LIGHTER_GRAY, BLACK } from './constants/Color';
 
 const MainContainer = styled(Container)({
   backgroundColor: LIGHTER_GRAY,
 });
 
-const NavLink = styled(Link)({
-  fontSize: '14pt',
-  fontStyle: 'normal',
-  '&:link': {
-    textDecoration: 'none',
-    color: BLACK,
-  },
-  '&:visited': {
-    textDecoration: 'none',
-    color: BLACK,
-  },
-  '&:hover': {
-    textDecoration: 'none',
-  },
-  '&:active': {
-    textDecoration: 'none',
-    color: BLACK,
-  },
-});
-
 const LandingPageContainer = () => (
   <Stack direction="column">
-    <Stack direction="row" spacing={4} sx={{ padding: '30px' }}>
-      <NavLink to="about">About</NavLink>
-      <NavLink to="help">Help</NavLink>
+    <Stack direction="row" spacing={2} sx={{ padding: '25px', zIndex: 999 }}>
+      <Button
+        component="a"
+        startIcon={<HelpOutlineIcon />}
+        href="https://metadatacenter.github.io/spreadsheet-validator-docs/"
+        rel="noopener"
+        target="_blank"
+        sx={{ color: BLACK }}
+      >
+        Help
+      </Button>
     </Stack>
     <Outlet />
   </Stack>
@@ -98,8 +85,6 @@ const App = () => {
       <Routes>
         <Route element={<LandingPageContainer />}>
           <Route path={HOME_PATH} element={<Home setAppData={setAppData} />} />
-          <Route path={ABOUT_PATH} element={<About />} />
-          <Route path={HELP_PATH} element={<Help />} />
         </Route>
         <Route element={(<WorkspaceContainer appData={appData} />)}>
           <Route path={OVERVIEW_PATH} element={<Overview />} />
