@@ -50,20 +50,24 @@ const Overview = () => {
           templateUrl={templateAccessUrl}
         />
       </Section>
-      <Section>
-        <ErrorAnalysisChart
-          title="Completeness Error Analysis"
-          subtitle={`Evaluating ${data.length} metadata records for detecting missing values in the spreadsheet.`}
-          analysisData={missingValueAnalysisChartData}
-        />
-      </Section>
-      <Section>
-        <ErrorAnalysisChart
-          title="Adherence Error Analysis"
-          subtitle={`Evaluating ${data.length} metadata records for detecting invalid value types in the spreadsheet.`}
-          analysisData={invalidValueTypeAnalysisChartData}
-        />
-      </Section>
+      {evaluationSummaryData.hasCompletenessErrors && (
+        <Section>
+          <ErrorAnalysisChart
+            title="Completeness Error Analysis"
+            subtitle={`Evaluating ${data.length} metadata records for detecting missing values in the spreadsheet.`}
+            analysisData={missingValueAnalysisChartData}
+          />
+        </Section>
+      )}
+      {evaluationSummaryData.hasAdherenceErrors && (
+        <Section>
+          <ErrorAnalysisChart
+            title="Adherence Error Analysis"
+            subtitle={`Evaluating ${data.length} metadata records for detecting invalid value types in the spreadsheet.`}
+            analysisData={invalidValueTypeAnalysisChartData}
+          />
+        </Section>
+      )}
     </Container>
   );
 };
