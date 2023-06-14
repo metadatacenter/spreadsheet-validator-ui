@@ -1,11 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { styled } from '@mui/material';
+import { Link, styled } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import Card from '../../styles/Card';
 import Block from '../../styles/Block';
 import Title from '../../styles/Title';
+import SubTitle from '../../styles/SubTitle';
 import Paragraph from '../../styles/Paragraph';
 import BaseButton from '../../styles/BaseButton';
 import { COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from '../../constants/Router';
@@ -60,7 +61,12 @@ const chartOptions = {
   cutout: '65%',
 };
 
-const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
+const EvaluationSummaryChart = ({
+  evaluationSummaryData,
+  inputFileName,
+  templateName,
+  templateUrl,
+}) => {
   const navigate = useNavigate();
   return (
     <Card>
@@ -75,7 +81,25 @@ const EvaluationSummaryChart = ({ evaluationSummaryData }) => {
       </ChartBlock>
       <DescriptionBlock>
         <Block>
-          <Title variant="h2" sx={{ paddingBottom: '40px' }}>Validation Summary</Title>
+          <Title variant="h2">
+            Validation Summary of
+            {' '}
+            <Link
+              href={templateUrl}
+              underline="always"
+              target="_blank"
+              rel="noopener"
+            >
+              {templateName}
+            </Link>
+            {' '}
+            Metadata
+          </Title>
+          <SubTitle variant="h3" sx={{ paddingBottom: '40px' }}>
+            Input file name:
+            {' '}
+            {inputFileName}
+          </SubTitle>
           <Paragraph>
             The validity of a metadata record is measured by two metrics:
             {' '}
@@ -140,6 +164,9 @@ EvaluationSummaryChart.propTypes = {
     hasCompletenessErrors: PropTypes.bool.isRequired,
     hasAdherenceErrors: PropTypes.bool.isRequired,
   }).isRequired,
+  inputFileName: PropTypes.string.isRequired,
+  templateName: PropTypes.string.isRequired,
+  templateUrl: PropTypes.string.isRequired,
 };
 
 export default EvaluationSummaryChart;

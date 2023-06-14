@@ -5,7 +5,6 @@ import AppContext from '../AppContext';
 import PageTitle from '../../components/PageTitle';
 import EvaluationSummaryChart from '../../components/EvaluationSummaryChart/evaluation-summary-chart';
 import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
-import InfoBox from '../../components/InfoBox/info-box';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
 import { generateErrorSummaryReport, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
@@ -16,7 +15,7 @@ const Overview = () => {
   const { schema, data, reporting, otherProps } = appData;
   const { inputFileMetadata } = otherProps;
   const inputFileName = inputFileMetadata.name;
-  const templateName = `${schema.name} ${schema.version}`;
+  const templateName = schema.name;
   const templateAccessUrl = schema.accessUrl;
 
   const evaluationSummaryData = useMemo(
@@ -44,10 +43,8 @@ const Overview = () => {
         />
       </Section>
       <Section>
-        <EvaluationSummaryChart evaluationSummaryData={evaluationSummaryData} />
-      </Section>
-      <Section>
-        <InfoBox
+        <EvaluationSummaryChart
+          evaluationSummaryData={evaluationSummaryData}
           inputFileName={inputFileName}
           templateName={templateName}
           templateUrl={templateAccessUrl}
