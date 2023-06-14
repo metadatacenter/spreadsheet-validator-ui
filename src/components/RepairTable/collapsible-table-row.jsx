@@ -21,7 +21,7 @@ const CellValue = styled(Typography)({
 
 const printFrequency = (rows) => {
   const frequency = rows.length;
-  return (frequency === 1) ? `(${frequency} cell)` : `(${frequency} cells)`;
+  return (frequency === 1) ? `(${frequency} row)` : `(${frequency} rows)`;
 };
 
 // eslint-disable-next-line max-len
