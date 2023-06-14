@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { SpeedDial, SpeedDialAction } from '@mui/material';
+import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel, faFileCsv } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,25 @@ const GenerateSpreadsheetButton = () => {
   return (
     <SpeedDial
       ariaLabel="Generate repaired table data"
-      icon={<DownloadIcon />}
+      FabProps={{ variant: 'extended' }}
+      icon={(
+        <SpeedDialIcon
+          icon={(
+            <Box sx={{ display: 'flex' }}>
+              <DownloadIcon />
+              &nbsp;
+              <Typography>Download</Typography>
+            </Box>
+          )}
+          openIcon={(
+            <Box sx={{ display: 'flex' }}>
+              <DownloadIcon />
+              &nbsp;
+              <Typography>Download</Typography>
+            </Box>
+          )}
+        />
+      )}
       direction="up"
       sx={{ position: 'fixed', bottom: 32, right: 36 }}
     >
