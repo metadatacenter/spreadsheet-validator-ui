@@ -1,10 +1,11 @@
-import React from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link, styled } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import AppContext from '../../pages/AppContext';
 import Card from '../../styles/Card';
 import Block from '../../styles/Block';
 import Title from '../../styles/Title';
@@ -12,6 +13,7 @@ import SubTitle from '../../styles/SubTitle';
 import Paragraph from '../../styles/Paragraph';
 import BaseButton from '../../styles/BaseButton';
 import { COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from '../../constants/Router';
+import { hasCompletenessErrors, hasAdherenceErrors } from '../../helpers/app-utils';
 
 const ChartBlock = styled(Block)({
   width: '420px',
@@ -70,6 +72,8 @@ const EvaluationSummaryChart = ({
   templateUrl,
 }) => {
   const navigate = useNavigate();
+  const { appData } = useContext(AppContext);
+  const { reporting } = appData;
   return (
     <Card>
       <ChartBlock>
@@ -136,7 +140,7 @@ const EvaluationSummaryChart = ({
           <BaseButton
             sx={{ width: '330px' }}
             variant="contained"
-            disabled={!evaluationSummaryData.hasCompletenessErrors}
+            disabled={!hasCompletenessErrors(reporting)}
             onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`)}
           >
             Repair Completeness Errors
@@ -144,7 +148,7 @@ const EvaluationSummaryChart = ({
           <BaseButton
             sx={{ width: '330px' }}
             variant="contained"
-            disabled={!evaluationSummaryData.hasAdherenceErrors}
+            disabled={!hasAdherenceErrors(reporting)}
             onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`)}
           >
             Repair Adherence Errors
