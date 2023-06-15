@@ -217,7 +217,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
                         rel="noopener noreferrer"
                       >
                         click here
-                      </a>.
+                      </a>. Mention the field name and the new value(s) in your request email.
                     </p>
                   </>
                 )}
