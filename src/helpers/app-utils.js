@@ -51,10 +51,16 @@ export const generateEvaluationSummaryData = (spreadsheetData, reportingData) =>
       data: [errorSize, validSize],
       backgroundColor: [RED, GREEN],
     }],
-    hasCompletenessErrors: reportingData.some((item) => checkCompletenessError(item)),
-    hasAdherenceErrors: reportingData.some((item) => checkAdherenceError(item)),
   };
 };
+
+export const hasCompletenessErrors = (reportingData) => (
+  reportingData.some((item) => checkCompletenessError(item))
+);
+
+export const hasAdherenceErrors = (reportingData) => (
+  reportingData.some((item) => checkAdherenceError(item))
+);
 
 export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
   columns: ['Field name', '# of invalid metadata records'],

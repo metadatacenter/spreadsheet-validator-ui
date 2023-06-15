@@ -7,7 +7,16 @@ import EvaluationSummaryChart from '../../components/EvaluationSummaryChart/eval
 import ErrorAnalysisChart from '../../components/ErrorAnalysisChart';
 import Container from '../../styles/Container';
 import Section from '../../styles/Section';
-import { generateErrorSummaryReport, generateEvaluationSummaryData, generateInvalidValueTypeAnalysisChartData, generateMissingValueAnalysisChartData } from '../../helpers/app-utils';
+// eslint-disable-next-line object-curly-newline
+import {
+  generateErrorSummaryReport,
+  generateEvaluationSummaryData,
+  generateInvalidValueTypeAnalysisChartData,
+  generateMissingValueAnalysisChartData,
+  hasCompletenessErrors,
+  hasAdherenceErrors,
+  // eslint-disable-next-line object-curly-newline
+} from '../../helpers/app-utils';
 import { getValidationResultTitle } from '../../helpers/title-utils';
 
 const Overview = () => {
@@ -50,7 +59,7 @@ const Overview = () => {
           templateUrl={templateAccessUrl}
         />
       </Section>
-      {evaluationSummaryData.hasCompletenessErrors && (
+      {hasCompletenessErrors(reporting) && (
         <Section>
           <ErrorAnalysisChart
             title="Completeness Error Analysis"
@@ -59,7 +68,7 @@ const Overview = () => {
           />
         </Section>
       )}
-      {evaluationSummaryData.hasAdherenceErrors && (
+      {hasAdherenceErrors(reporting) && (
         <Section>
           <ErrorAnalysisChart
             title="Adherence Error Analysis"
