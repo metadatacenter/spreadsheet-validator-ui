@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link, styled } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import Card from '../../styles/Card';
 import Block from '../../styles/Block';
@@ -96,7 +98,9 @@ const EvaluationSummaryChart = ({
             Metadata
           </Title>
           <SubTitle variant="h3" sx={{ paddingBottom: '40px' }}>
-            Input file name:
+            &nbsp;
+            <FontAwesomeIcon icon={faFileExcel} size="s" title="Input spreadsheet file" />
+            &nbsp;
             {' '}
             {inputFileName}
           </SubTitle>
