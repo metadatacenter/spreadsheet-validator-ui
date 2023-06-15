@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useImmer } from 'use-immer';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +19,7 @@ import { nullOnEmpty } from '../../../helpers/string-utils';
 import { getRows, getColumnLabel, getColumnType, getPermissibleValues, getColumnDescription, getColumnName, isColumnRequired } from '../../../helpers/data-utils';
 import HeaderWithBatchInput from '../header-with-batch-input';
 import HeaderWithFilter from '../header-with-filter';
-import InfoTooltip from '../info-tooltip';
+import HtmlTooltip from '../html-tooltip';
 import EditableSheetCell from '../editable-sheet-cell';
 import StaticSheetCell from '../static-sheet-cell';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, SaveAndRepairNextButton, SaveButton, SheetTable, SheetTableContainer } from '../styled';
@@ -197,16 +198,35 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
         <FooterPanel>
           <Flex sx={{ width: '400px', paddingLeft: '5px' }}>
             <Stack direction="row" gap={1}>
-              <InfoTooltip
-                title="The table shows the metadata records with a missing required value.
-                Use the input field on each metadata record to enter the correct value,
-                or use the input field on the table header to enter the value in a batch mode."
+              <HtmlTooltip
+                title={(
+                  <>
+                    <p><b>Q: How to repair my metadata?</b></p>
+                    <p>
+                      A: The table displays a portion of your metadata spreadsheet where errors
+                      are found. You can repair your metadata by typing the correct values
+                      in the first column. You can also use the dropdown list to select a value.
+                    </p>
+                    <p><b>Q: What to do if the dropdown list does not have my value?</b></p>
+                    <p>
+                      A: Please send a new value request
+                      to <em>help@hubmapconsortium.org</em> or&nbsp;
+                      <a
+                        href="mailto:help@hubmapconsortium.org"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        click here
+                      </a>.
+                    </p>
+                  </>
+                )}
                 placement="right"
                 arrow
               >
                 <HelpIcon color="primary" fontSize="medium" />
-              </InfoTooltip>
-              <Typography>How to Use the Table</Typography>
+              </HtmlTooltip>
+              <Typography>Help</Typography>
             </Stack>
           </Flex>
           <SheetPagination

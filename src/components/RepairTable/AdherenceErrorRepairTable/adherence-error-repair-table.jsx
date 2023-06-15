@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
@@ -15,7 +16,7 @@ import { isColumnRequired } from '../../../helpers/data-utils';
 import { createReplaceOperationPatch, getPagedData } from '../../../helpers/app-utils';
 import HeaderWithCheckbox from '../header-with-checkbox';
 import CollapsibleTableRow from '../collapsible-table-row';
-import InfoTooltip from '../info-tooltip';
+import HtmlTooltip from '../html-tooltip';
 import { initUserInput } from './function';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveAndRepairNextButton, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
@@ -99,7 +100,7 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
           <SheetTable stickyHeader>
             <SheetHeader>
               <HeaderCell align="center" width="30%">
-                <HeaderLabel>Column name</HeaderLabel>
+                <HeaderLabel>Field name</HeaderLabel>
               </HeaderCell>
               <HeaderCell align="center" width="30%">
                 <HeaderLabel>Original value</HeaderLabel>
@@ -139,17 +140,37 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
         <FooterPanel>
           <Flex sx={{ width: '400px', paddingLeft: '5px' }}>
             <Stack direction="row" gap={1}>
-              <InfoTooltip
-                title="The table shows all the values from users that are not correctly entered
-                according to the metadata specification. Use the available input field to enter
-                the correct value, or use the check box to approve the suggested value given
-                by the application."
+              <HtmlTooltip
+                title={(
+                  <>
+                    <p><b>Q: How to repair my metadata?</b></p>
+                    <p>
+                      A: The table displays the <em>field name</em> and its <em>original value</em>
+                      &nbsp;with a number of occurences in your metadata spreadsheet. The&nbsp;
+                      <em>new value</em> is the value you want to replace the original value with.
+                      You can either type or select a value from the dropdown list. Click the&nbsp;
+                      <em>checkbox</em> to accept the change.
+                    </p>
+                    <p><b>Q: What to do if the dropdown list does not have my value?</b></p>
+                    <p>
+                      A: Please send a new value request
+                      to <em>help@hubmapconsortium.org</em> or&nbsp;
+                      <a
+                        href="mailto:help@hubmapconsortium.org"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        click here
+                      </a>.
+                    </p>
+                  </>
+                )}
                 placement="right"
                 arrow
               >
                 <HelpIcon color="primary" fontSize="medium" />
-              </InfoTooltip>
-              <Typography>How to Use the Table</Typography>
+              </HtmlTooltip>
+              <Typography>Help</Typography>
             </Stack>
           </Flex>
           <SheetPagination
