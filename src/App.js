@@ -17,6 +17,7 @@ import AppContext from './pages/AppContext';
 import Navbar from './components/Navbar';
 import ContentArea from './components/ContentArea';
 import PageFooter from './components/PageFooter';
+import HelpButton from './components/HelpButton';
 import GenerateSpreadsheetButton from './components/GenerateSpreadsheetButton';
 import { generateEmptyObjects } from './helpers/array-utils';
 import { HOME_PATH, OVERVIEW_PATH, COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from './constants/Router';
@@ -66,6 +67,7 @@ const WorkspaceContainer = ({ appData }) => {
         <Navbar />
         <ContentArea />
         <PageFooter />
+        <HelpButton />
         <GenerateSpreadsheetButton />
       </MainContainer>
     </AppContext.Provider>
