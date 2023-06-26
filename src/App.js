@@ -3,6 +3,7 @@ import { useImmer } from 'use-immer';
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { Stack, Button, styled } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import PropTypes from 'prop-types';
 import './App.css';
 import Home from './pages/Home';
@@ -37,6 +38,16 @@ const LandingPageContainer = () => (
         sx={{ color: BLACK }}
       >
         Help
+      </Button>
+      <Button
+        component="a"
+        startIcon={<FileDownloadIcon />}
+        href="https://hubmapconsortium.github.io/ingest-validation-tools/"
+        rel="noopener"
+        target="_blank"
+        sx={{ color: BLACK }}
+      >
+        Metadata Spreadsheet
       </Button>
       <Button component="div" disabled>UI Version: 1.1.0</Button>
     </Stack>
