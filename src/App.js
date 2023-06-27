@@ -50,7 +50,7 @@ const LandingPageContainer = () => (
       >
         Metadata Spreadsheet
       </Button>
-      <Button component="div" disabled>UI Version: 1.2.0</Button>
+      <Button component="div" disabled>UI Version: 1.2.1</Button>
     </Stack>
     <Outlet />
   </Stack>
