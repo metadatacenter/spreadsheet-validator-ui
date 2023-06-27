@@ -60,11 +60,10 @@ const Navbar = () => {
       </Container>
       <Collapse direction="down" in={!hide} mountOnEnter unmountOnExit>
         <Banner>
-          No errors found.&nbsp;
           {noErrorFound ? (
-            'Please proceed to upload the spreadsheet to the'
+            'No errors found. Please proceed to upload the spreadsheet to the'
           ) : (
-            'You can download the repaired spreadsheet now and proceed to upload it to the'
+            'Fix completed. Download the repaired spreadsheet and proceed to upload it to the'
           )}
           &nbsp;
           <Link
