@@ -17,7 +17,7 @@ const CompletenessErrorNavMenu = () => {
   const { schema, reporting } = appData;
 
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryReport(reporting, schema),
+    () => generateErrorSummaryReport(reporting),
     [reporting],
   );
   const completenessErrorStatusList = useMemo(

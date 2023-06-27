@@ -13,10 +13,10 @@ const AdherenceErrorNavMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const { appData, patches } = useContext(AppContext);
-  const { schema, reporting } = appData;
+  const { reporting } = appData;
 
   const errorSummaryData = useMemo(
-    () => generateErrorSummaryReport(reporting, schema),
+    () => generateErrorSummaryReport(reporting),
     [reporting],
   );
   const adherenceErrorStatusList = useMemo(
