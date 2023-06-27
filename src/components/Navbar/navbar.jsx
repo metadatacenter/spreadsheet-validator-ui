@@ -1,12 +1,22 @@
 import { useContext, useState, useEffect } from 'react';
-import { AppBar, Box, Toolbar, Typography, Container, Link, Collapse, styled } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { AppBar, Box, Button, Toolbar, Typography, Container, Link, Collapse, styled } from '@mui/material';
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import AppContext from '../../pages/AppContext';
 import CompletenessErrorNavMenu from '../NavMenu/CompletenessErrorNavMenu';
 import AdherenceErrorNavMenu from '../NavMenu/AdherenceErrorNavMenu';
 import OverviewNavMenu from '../NavMenu/OverviewNavMenu';
 import { hasCompletenessErrors, hasAdherenceErrors, isRepairCompleted } from '../../helpers/app-utils';
-import { BLACK, GREEN } from '../../constants/Color';
+import { BLACK, GREEN, WHITE } from '../../constants/Color';
+
+const NewButton = styled(Button)({
+  color: WHITE,
+  border: '1px solid WHITE',
+  '&:hover': {
+    color: BLACK,
+    backgroundColor: WHITE,
+  },
+});
 
 const Banner = styled(Box)({
   backgroundColor: GREEN,
@@ -17,6 +27,7 @@ const Banner = styled(Box)({
 });
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [hide, setHide] = useState(true);
   const { appData, patches } = useContext(AppContext);
   const { reporting } = appData;
@@ -50,6 +61,11 @@ const Navbar = () => {
           >
             Metadata Spreadsheet Validator
           </Typography>
+          <Box>
+            <NewButton variant="outlined" onClick={() => navigate('..')}>
+              NEW VALIDATION
+            </NewButton>
+          </Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <OverviewNavMenu />
