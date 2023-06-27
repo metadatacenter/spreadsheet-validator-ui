@@ -11,7 +11,8 @@ import { BLACK, GREEN } from '../../constants/Color';
 const Banner = styled(Box)({
   backgroundColor: GREEN,
   color: BLACK,
-  padding: '10px',
+  padding: '16px',
+  fontSize: '18px',
   textAlign: 'center',
 });
 
