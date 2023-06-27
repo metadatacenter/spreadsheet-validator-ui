@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { AppBar, Box, Toolbar, Typography, Container, Link, styled } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography, Container, Link, Collapse, styled } from '@mui/material';
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import AppContext from '../../pages/AppContext';
 import CompletenessErrorNavMenu from '../NavMenu/CompletenessErrorNavMenu';
@@ -58,23 +58,25 @@ const Navbar = () => {
           </Box>
         </Toolbar>
       </Container>
-      <Banner hidden={hide}>
-        No errors found.&nbsp;
-        {noErrorFound ? (
-          'Please proceed to upload the spreadsheet to the'
-        ) : (
-          'You can download the repaired spreadsheet now and proceed to upload it to the'
-        )}
-        &nbsp;
-        <Link
-          href="http://ingest.hubmapconsortium.org"
-          rel="noopener"
-          target="_blank"
-        >
-          HuBMAP ingest portal
-        </Link>
-        .
-      </Banner>
+      <Collapse direction="down" in={!hide} mountOnEnter unmountOnExit>
+        <Banner>
+          No errors found.&nbsp;
+          {noErrorFound ? (
+            'Please proceed to upload the spreadsheet to the'
+          ) : (
+            'You can download the repaired spreadsheet now and proceed to upload it to the'
+          )}
+          &nbsp;
+          <Link
+            href="http://ingest.hubmapconsortium.org"
+            rel="noopener"
+            target="_blank"
+          >
+            HuBMAP ingest portal
+          </Link>
+          .
+        </Banner>
+      </Collapse>
     </AppBar>
   );
 };
