@@ -279,18 +279,24 @@ const Home = ({ setAppData }) => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {error?.code === 1 && 'Input Spreadsheet Error'}
-            {error?.code === 2 && 'Access Error'}
-            {error?.code === 3 && 'Access Error'}
+            Validator Error
           </DialogTitle>
-          <DialogContent sx={{ width: '600px' }}>
+          <DialogContent sx={{ width: '700px' }}>
             <DialogContentText id="alert-dialog-description" sx={{ paddingBottom: '30px' }}>
               {error?.message}
             </DialogContentText>
             <TextField
+              sx={{ width: '100%', backgroundColor: LIGHTER_GRAY, marginBottom: '30px' }}
+              label="Fix suggestion:"
+              defaultValue={error?.fixSuggestion || 'Please send the detailed error message below to help@hubmapconsortium.org with a subject "Metadata Validator Error".'}
+              multiline
+              maxRows={8}
+              disabled
+            />
+            <TextField
               sx={{ width: '100%', backgroundColor: LIGHTER_GRAY }}
-              label="Fix Suggestion:"
-              defaultValue={error?.suggestion}
+              label="Detailed error message:"
+              defaultValue={`Status: ${error?.statusInfo}\nCause: ${error?.cause}`}
               multiline
               maxRows={8}
               disabled
