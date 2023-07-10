@@ -39,6 +39,8 @@ export const getNavigationSubMenuTitle = (errorType, column = '') => {
     title = 'Value is not number';
   } else if (errorType === 'notStringType') {
     title = 'Value is not string';
+  } else if (errorType === 'invalidUrl') {
+    title = 'Value is not a valid URL';
   }
   return title;
 };

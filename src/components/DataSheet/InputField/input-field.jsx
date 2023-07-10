@@ -5,7 +5,7 @@ import { WHITE } from '../../../constants/Color';
 
 const InputField = (
   // eslint-disable-next-line max-len
-  { id, value, type, placeholder, required, inputRef, onChange, onKeyPress, colorOnEmpty, endAdornment },
+  { id, value, type, placeholder, required, inputRef, onChange, onKeyPress, colorOnEmpty, error, endAdornment },
 ) => (
   <OutlinedInput
     fullWidth
@@ -19,6 +19,7 @@ const InputField = (
     onChange={onChange}
     onKeyPress={onKeyPress}
     sx={{ minWidth: '150px', backgroundColor: value === '' ? colorOnEmpty : WHITE }}
+    error={error}
     endAdornment={endAdornment}
   />
 );
@@ -33,6 +34,7 @@ InputField.propTypes = {
   onChange: PropTypes.func,
   onKeyPress: PropTypes.func,
   colorOnEmpty: PropTypes.string,
+  error: PropTypes.bool,
   endAdornment: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.element]),
 };
 
@@ -45,6 +47,7 @@ InputField.defaultProps = {
   onChange: undefined,
   onKeyPress: undefined,
   colorOnEmpty: WHITE,
+  error: false,
   endAdornment: undefined,
 };
 

@@ -32,10 +32,15 @@ const checkNotStringTypeError = (reportItem) => (
   reportItem.errorType === 'notStringType'
 );
 
+const checkInvalidUrlError = (reportItem) => (
+  reportItem.errorType === 'invalidUrl'
+);
+
 const checkAdherenceError = (reportItem) => (
   checkNotStandardTermError(reportItem)
   || checkNotNumberTypeError(reportItem)
   || checkNotStringTypeError(reportItem)
+  || checkInvalidUrlError(reportItem)
 );
 
 export const generateEvaluationSummaryData = (spreadsheetData, reportingData) => {
@@ -195,10 +200,26 @@ const getNotStringTypeButtonItemData = (errorSummary, patches) => {
   return null;
 };
 
+const getInvalidUrlButtonItemData = (errorSummary, patches) => {
+  const filteredSummary = errorSummary.filter(
+    (reportItem) => checkInvalidUrlError(reportItem),
+  );
+  if (filteredSummary.length > 0) {
+    return {
+      errorId: 'invalid-url-error',
+      errorType: 'invalidUrl',
+      errorCount: countRemainingErrorsFromErrorSummary(filteredSummary, patches),
+      errorLocation: null,
+    };
+  }
+  return null;
+};
+
 export const generateAdherenceErrorStatusList = (errorSummary, patches) => [
   getNotStandardTermButtonItemData(errorSummary, patches),
   getNotNumberTypeButtonItemData(errorSummary, patches),
   getNotStringTypeButtonItemData(errorSummary, patches),
+  getInvalidUrlButtonItemData(errorSummary, patches),
 ].filter(
   (item) => item !== null,
 );
