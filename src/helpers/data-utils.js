@@ -71,7 +71,8 @@ export const getAdherenceErrorReport = (reporting) => (
   reporting.filter(
     (reportItem) => reportItem.errorType === 'notStandardTerm'
       || reportItem.errorType === 'notNumberType'
-      || reportItem.errorType === 'notStringType',
+      || reportItem.errorType === 'notStringType'
+      || reportItem.errorType === 'invalidUrl',
   )
 );
 
