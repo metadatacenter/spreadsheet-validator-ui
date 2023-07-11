@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Typography, styled, CircularProgress, Dialog, DialogContent, DialogContentText, DialogActions, DialogTitle, TextField } from '@mui/material';
 import { FileUploader } from 'react-drag-drop-files';
 import { read, utils } from 'xlsx';
-import JSZip from 'jszip';
 import Papa from 'papaparse';
 import Container from '../../styles/Container';
 import BaseButton from '../../styles/BaseButton';
@@ -129,11 +128,11 @@ const Home = ({ setAppData }) => {
     return reader;
   };
 
-  const zipReader = () => {
+  const tsvReader = () => {
     const reader = new FileReader();
-    const FLOAT = /^\s*-?(\d*\.?\d+|\d+\.?\d*)(e[-+]?\d+)?\s*$/i;
     reader.onload = (e) => {
-      const res = e.target.result;
+      const content = e.target.result;
+      const FLOAT = /^\s*-?(\d*\.?\d+|\d+\.?\d*)(e[-+]?\d+)?\s*$/i;
       const defval = (value) => {
         let output = value;
         if (value === 'true' || value === 'TRUE') {
@@ -147,18 +146,10 @@ const Home = ({ setAppData }) => {
         }
         return output;
       };
-      JSZip.loadAsync(res).then((zip) => (
-        zip.file('MAIN.csv').async('string')
-      )).then((content) => {
-        const dt = Papa.parse(content, { header: true, dynamicTyping: false, transform: defval });
-        setData(dt.data);
-      });
-      JSZip.loadAsync(res).then((zip) => (
-        zip.file('metadata').async('string')
-      )).then((content) => {
-        const md = Papa.parse(content, { header: true, dynamicTyping: true });
-        setTemplateIri(md.data[0][CEDAR_TEMPLATE_IRI]);
-      });
+      const parsed = Papa.parse(content, { header: true, delimiter: '\t', dynamicTyping: false, transform: defval });
+      setData(parsed.data);
+      const schemaId = parsed.data[0].metadata_schema_id;
+      setTemplateIri(`https://repo.metadatacenter.org/templates/${schemaId}`);
     };
     return reader;
   };
@@ -167,8 +158,8 @@ const Home = ({ setAppData }) => {
     if (file) {
       setEnabled(true);
       const fileType = file.type;
-      if (fileType === 'application/zip') {
-        zipReader().readAsArrayBuffer(file);
+      if (fileType === 'text/tab-separated-values') {
+        tsvReader().readAsText(file);
       } else if (fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
         excelReader().readAsArrayBuffer(file);
       }
@@ -219,7 +210,7 @@ const Home = ({ setAppData }) => {
     setOpenDialog(false);
   };
 
-  const fileTypes = ['xlsx', 'zip'];
+  const fileTypes = ['xlsx', 'tsv'];
   return (
     <HomeContainer>
       <InputArea>
