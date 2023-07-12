@@ -310,7 +310,7 @@ export const generateNewSpreadsheet = (repairedData, staticSheets) => {
   writeFile(wb, 'repaired_spreadsheet.xlsx');
 };
 
-const writeCsv = (data, filename) => {
+const downloadFile = (data, filename) => {
   const element = document.createElement('a');
   const file = new Blob([data], { type: 'text/csv' });
   element.href = URL.createObjectURL(file);
@@ -322,5 +322,11 @@ const writeCsv = (data, filename) => {
 export const generateNewCsv = (repairedData) => {
   const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const csv = Papa.unparse(finalData);
-  writeCsv(csv, 'repaired_spreadsheet.csv');
+  downloadFile(csv, 'repaired_spreadsheet.csv');
+};
+
+export const generateNewTsv = (repairedData) => {
+  const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
+  const tsv = Papa.unparse(finalData, { delimiter: '\t' });
+  downloadFile(tsv, 'repaired_spreadsheet.tsv');
 };

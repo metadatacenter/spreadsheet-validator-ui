@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExcel, faFileCsv } from '@fortawesome/free-solid-svg-icons';
+import { ReactComponent as TsvIcon } from '../../assets/tsv-file.svg';
+import { ReactComponent as XlsxIcon } from '../../assets/xlsx-file.svg';
 import AppContext from '../../pages/AppContext';
-import { applyPatches, generateNewCsv, generateNewSpreadsheet } from '../../helpers/app-utils';
+import { applyPatches, generateNewTsv, generateNewSpreadsheet } from '../../helpers/app-utils';
 
 const GenerateSpreadsheetButton = () => {
   const { appData, patches } = useContext(AppContext);
@@ -37,14 +37,14 @@ const GenerateSpreadsheetButton = () => {
       sx={{ position: 'fixed', bottom: 32, right: 36 }}
     >
       <SpeedDialAction
-        key="generated-xlsx"
-        icon={<FontAwesomeIcon icon={faFileExcel} size="xl" />}
-        title="Save to Excel"
+        key="generate-tsv"
+        icon={<TsvIcon style={{ width: '32px', height: '32px' }} />}
+        title="Save to TSV"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
-          generateNewSpreadsheet(repairedData, staticSheets);
+          generateNewTsv(repairedData);
         }}
-        sx={{ width: 45, height: 45 }}
+        sx={{ width: 60, height: 60 }}
         componentsProps={{
           tooltip: {
             sx: {
@@ -54,14 +54,14 @@ const GenerateSpreadsheetButton = () => {
         }}
       />
       <SpeedDialAction
-        key="generated-csv"
-        icon={<FontAwesomeIcon icon={faFileCsv} size="xl" />}
-        title="Save to CSV"
+        key="generate-xlsx"
+        icon={<XlsxIcon style={{ width: '32px', height: '32px' }} />}
+        title="Save to Excel"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
-          generateNewCsv(repairedData);
+          generateNewSpreadsheet(repairedData, staticSheets);
         }}
-        sx={{ width: 45, height: 45 }}
+        sx={{ width: 60, height: 60 }}
         componentsProps={{
           tooltip: {
             sx: {
