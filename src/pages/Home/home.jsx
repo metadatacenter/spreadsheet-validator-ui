@@ -247,12 +247,14 @@ const Home = ({ setAppData }) => {
             size="large"
             onClick={submitSpreadsheet}
             disabled={!enabled}
+            sx={{ padding: '12px 80px 12px 80px' }}
           >
             Start Validating
           </BaseButton>
           {loading && (
             <CircularProgress
-              size={24}
+              size={28}
+              title="Loading..."
               sx={{
                 color: BLUE,
                 position: 'absolute',
