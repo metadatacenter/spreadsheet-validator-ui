@@ -5,6 +5,7 @@ import { ReactComponent as TsvIcon } from '../../assets/tsv-file.svg';
 import { ReactComponent as XlsxIcon } from '../../assets/xlsx-file.svg';
 import AppContext from '../../pages/AppContext';
 import { isRepairCompleted, applyPatches, generateNewTsv, generateNewSpreadsheet } from '../../helpers/app-utils';
+import { XLSX } from '../../constants/MimeType';
 
 const GenerateSpreadsheetButton = () => {
   const { appData, patches } = useContext(AppContext);
@@ -63,28 +64,31 @@ const GenerateSpreadsheetButton = () => {
           },
         }}
       />
-      <SpeedDialAction
-        key="generate-xlsx"
-        icon={<XlsxIcon style={{ width: '32px', height: '32px' }} />}
-        title="Download as Excel"
-        onClick={() => {
-          const repairedData = applyPatches(data, patches);
-          const baseInputFileName = inputFileMetadata.name.replace(/^(validated|draft)-/, '').trim();
-          if (isSpreadsheetValid) {
-            generateNewSpreadsheet(repairedData, staticSheets, `validated-${baseInputFileName}`);
-          } else {
-            generateNewSpreadsheet(repairedData, staticSheets, `draft-${baseInputFileName}`);
-          }
-        }}
-        sx={{ width: 60, height: 60 }}
-        componentsProps={{
-          tooltip: {
-            sx: {
-              fontSize: '1em',
-            },
-          },
-        }}
-      />
+      {inputFileMetadata.type === XLSX
+        && (
+          <SpeedDialAction
+            key="generate-xlsx"
+            icon={<XlsxIcon style={{ width: '32px', height: '32px' }} />}
+            title="Download as Excel"
+            onClick={() => {
+              const repairedData = applyPatches(data, patches);
+              const baseInputFileName = inputFileMetadata.name.replace(/^(validated|draft)-/, '').trim();
+              if (isSpreadsheetValid) {
+                generateNewSpreadsheet(repairedData, staticSheets, `validated-${baseInputFileName}`);
+              } else {
+                generateNewSpreadsheet(repairedData, staticSheets, `draft-${baseInputFileName}`);
+              }
+            }}
+            sx={{ width: 60, height: 60 }}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  fontSize: '1em',
+                },
+              },
+            }}
+          />
+        )}
     </SpeedDial>
   );
 };
