@@ -1,15 +1,20 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon, Typography } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { ReactComponent as TsvIcon } from '../../assets/tsv-file.svg';
 import { ReactComponent as XlsxIcon } from '../../assets/xlsx-file.svg';
 import AppContext from '../../pages/AppContext';
-import { applyPatches, generateNewTsv, generateNewSpreadsheet } from '../../helpers/app-utils';
+import { isRepairCompleted, applyPatches, generateNewTsv, generateNewSpreadsheet } from '../../helpers/app-utils';
 
 const GenerateSpreadsheetButton = () => {
   const { appData, patches } = useContext(AppContext);
-  const { data, otherProps } = appData;
-  const { staticSheets } = otherProps;
+  const { data, reporting, otherProps } = appData;
+  const { inputFileMetadata, staticSheets } = otherProps;
+
+  const isSpreadsheetValid = useMemo(
+    () => isRepairCompleted(reporting, patches),
+    [reporting, patches],
+  );
 
   return (
     <SpeedDial
@@ -42,7 +47,12 @@ const GenerateSpreadsheetButton = () => {
         title="Download as TSV"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
-          generateNewTsv(repairedData);
+          const baseInputFileName = inputFileMetadata.name.replace(/^(validated|draft)-/, '').trim();
+          if (isSpreadsheetValid) {
+            generateNewTsv(repairedData, `validated-${baseInputFileName}`);
+          } else {
+            generateNewTsv(repairedData, `draft-${baseInputFileName}`);
+          }
         }}
         sx={{ width: 60, height: 60 }}
         componentsProps={{
@@ -59,7 +69,12 @@ const GenerateSpreadsheetButton = () => {
         title="Download as Excel"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
-          generateNewSpreadsheet(repairedData, staticSheets);
+          const baseInputFileName = inputFileMetadata.name.replace(/^(validated|draft)-/, '').trim();
+          if (isSpreadsheetValid) {
+            generateNewSpreadsheet(repairedData, staticSheets, `validated-${baseInputFileName}`);
+          } else {
+            generateNewSpreadsheet(repairedData, staticSheets, `draft-${baseInputFileName}`);
+          }
         }}
         sx={{ width: 60, height: 60 }}
         componentsProps={{

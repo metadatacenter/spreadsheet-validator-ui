@@ -292,7 +292,12 @@ export const applyPatches = (data, patches) => {
   return jsonpatch.applyPatch(data, patchArray).newDocument;
 };
 
-export const generateNewSpreadsheet = (repairedData, staticSheets) => {
+const validatePath = (fileName, fileExtension) => {
+  const pos = fileName.lastIndexOf('.');
+  return `${fileName.substr(0, pos < 0 ? fileName.length : pos)}${fileExtension}`;
+};
+
+export const generateNewSpreadsheet = (repairedData, staticSheets, outputFile) => {
   const wb = utils.book_new();
 
   // The main metadata sheet
@@ -307,7 +312,7 @@ export const generateNewSpreadsheet = (repairedData, staticSheets) => {
     const ss = utils.json_to_sheet(staticSheets[sheetName]);
     utils.book_append_sheet(wb, ss, sheetName);
   });
-  writeFile(wb, 'repaired_spreadsheet.xlsx');
+  writeFile(wb, validatePath(outputFile, '.xlsx'));
 };
 
 const downloadFile = (data, filename) => {
@@ -319,14 +324,14 @@ const downloadFile = (data, filename) => {
   element.click();
 };
 
-export const generateNewCsv = (repairedData) => {
+export const generateNewCsv = (repairedData, outputFile) => {
   const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const csv = Papa.unparse(finalData);
-  downloadFile(csv, 'repaired_spreadsheet.csv');
+  downloadFile(csv, validatePath(outputFile, '.csv'));
 };
 
-export const generateNewTsv = (repairedData) => {
+export const generateNewTsv = (repairedData, outputFile) => {
   const finalData = repairedData.map(({ rowNumber, ...rest }) => ({ ...rest })); // omit rowNumber
   const tsv = Papa.unparse(finalData, { delimiter: '\t' });
-  downloadFile(tsv, 'repaired_spreadsheet.tsv');
+  downloadFile(tsv, validatePath(outputFile, '.tsv'));
 };
