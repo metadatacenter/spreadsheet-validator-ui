@@ -1,8 +1,7 @@
 import { styled, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import Section from '../../styles/Section';
-import { BLUE } from '../../constants/Color';
+import { DARK_GRAY } from '../../constants/Color';
 
 const Title = styled(Typography)({
   fontSize: '27pt',
@@ -11,20 +10,13 @@ const Title = styled(Typography)({
 });
 
 const SubTitle = styled(Typography)({
-  fontSize: '16pt',
-});
-
-const InfoIcon = styled(InfoOutlinedIcon)({
-  verticalAlign: 'middle',
-  color: BLUE,
-  minWidth: '35px',
+  fontSize: '15pt',
 });
 
 const PageTitle = ({ title, subtitle }) => (
   <Section>
     <Title variant="h3">{title}</Title>
-    <SubTitle variant="h4" sx={{ display: 'flex', alignItems: 'center' }}>
-      <InfoIcon />
+    <SubTitle variant="h4" sx={{ display: 'flex', color: DARK_GRAY }}>
       {subtitle}
     </SubTitle>
   </Section>

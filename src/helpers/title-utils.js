@@ -18,13 +18,15 @@ export const getTotalErrorCountTitle = (report, errorType, column = '') => {
   let title = `Unknown error type: ${errorType}`;
   const errorSize = report.length;
   if (errorType === 'missingRequired') {
-    title = `${errorSize} ${errorSize === 1 ? 'record is' : 'records are'} missing "${column}" value`;
+    title = `Found ${errorSize} ${errorSize === 1 ? 'metadata record that has' : 'metadata records that have'} a missing "${column}" value`;
   } else if (errorType === 'notStandardTerm') {
-    title = `${errorSize} ${errorSize === 1 ? 'value is' : 'values are'} are not using the standard term`;
+    title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not using the standard term`;
   } else if (errorType === 'notNumberType') {
-    title = `${errorSize} ${errorSize === 1 ? 'value is' : 'values are'} not a number`;
+    title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not a number`;
   } else if (errorType === 'notStringType') {
-    title = `${errorSize} ${errorSize === 1 ? 'value is' : 'values are'} not a string`;
+    title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not a string`;
+  } else if (errorType === 'invalidUrl') {
+    title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not a valid URL string`;
   }
   return title;
 };

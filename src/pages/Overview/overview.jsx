@@ -48,7 +48,7 @@ const Overview = () => {
       <Section>
         <PageTitle
           title={getValidationResultTitle()}
-          subtitle={`${data.length} metadata records were found in the spreadsheet.`}
+          subtitle={`Found ${data.length} metadata records in the spreadsheet`}
         />
       </Section>
       <Section>
