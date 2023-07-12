@@ -101,58 +101,111 @@ const Home = ({ setAppData }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const navigate = useNavigate();
 
-  const excelReader = () => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target.result;
-      const workbook = read(content, { type: 'array' });
-
-      let mainSheet = workbook.Sheets[MAIN_SHEET];
-      if (!mainSheet) {
-        const sheetName = workbook.SheetNames[0];
-        mainSheet = workbook.Sheets[sheetName];
-      }
-      const dt = utils.sheet_to_json(mainSheet, { defval: '' });
-      setData(dt);
-
-      const metadataSheet = workbook.Sheets[METADATA_SHEET];
-      const md = utils.sheet_to_json(metadataSheet, { defval: '' });
-      setTemplateIri(md[0][CEDAR_TEMPLATE_IRI]);
-
-      const staticSheetNames = workbook.SheetNames.slice(1);
-      const staticSheetObjects = staticSheetNames.reduce((collector, name) => ({
-        ...collector,
-        [name]: utils.sheet_to_json(workbook.Sheets[name], { defval: '' }),
-      }), {});
-      setStaticSheets(staticSheetObjects);
-    };
-    return reader;
+  const throwInvalidFileError = (message, cause) => {
+    // eslint-disable-next-line no-throw-literal
+    throw ({
+      message,
+      cause,
+      statusInfo: 'N/A',
+      fixSuggestion: 'Please download the latest version of the metadata spreadsheet from the HIVE website.',
+    });
   };
 
-  const tsvReader = () => {
+  const readBinaryFile = (file) => new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target.result;
-      const FLOAT = /^\s*-?(\d*\.?\d+|\d+\.?\d*)(e[-+]?\d+)?\s*$/i;
-      const defval = (value) => {
-        let output = value;
-        if (value === 'true' || value === 'TRUE') {
-          output = true;
-        } else if (value === 'false' || value === 'FALSE') {
-          output = false;
-        } else if (FLOAT.test(value)) {
-          output = parseFloat(value);
-        } else {
-          return value;
-        }
-        return output;
-      };
-      const parsed = Papa.parse(content, { header: true, delimiter: '\t', dynamicTyping: false, transform: defval });
-      setData(parsed.data);
-      const schemaId = parsed.data[0].metadata_schema_id;
-      setTemplateIri(`https://repo.metadatacenter.org/templates/${schemaId}`);
+    reader.onload = (event) => {
+      const content = event.target.result;
+      try {
+        resolve(content);
+      } catch (e) {
+        reject(e);
+      }
     };
-    return reader;
+    reader.readAsArrayBuffer(file);
+  });
+
+  const parseMetadataInExcel = (content) => {
+    const workbook = read(content, { type: 'array' });
+
+    let mainSheet = workbook.Sheets[MAIN_SHEET];
+    if (!mainSheet) {
+      const sheetName = workbook.SheetNames[0];
+      mainSheet = workbook.Sheets[sheetName];
+    }
+    if (!mainSheet) {
+      throwInvalidFileError('Invalid metadata Excel file.', 'The [MAIN] sheet is missing.');
+    }
+    const dt = utils.sheet_to_json(mainSheet, { defval: '' });
+    if (!dt || dt.length === 0) {
+      throwInvalidFileError('Invalid metadata Excel file.', 'The [MAIN] sheet is empty.');
+    }
+    setData(dt);
+
+    const metadataSheet = workbook.Sheets[METADATA_SHEET];
+    if (!metadataSheet) {
+      throwInvalidFileError('Invalid metadata Excel file.', 'The [.metadata] sheet is missing.');
+    }
+    const md = utils.sheet_to_json(metadataSheet, { defval: '' });
+    if (!md || md.length === 0) {
+      throwInvalidFileError('Invalid metadata Excel file.', 'The [.metadata] sheet is empty.');
+    }
+    const iri = md[0][CEDAR_TEMPLATE_IRI];
+    if (!iri) {
+      throwInvalidFileError('Invalid metadata Excel file.', 'The schema IRI is missing in the [.metadata] sheet.');
+    }
+    setTemplateIri(iri);
+
+    const staticSheetNames = workbook.SheetNames.slice(1);
+    const staticSheetObjects = staticSheetNames.reduce((collector, name) => ({
+      ...collector,
+      [name]: utils.sheet_to_json(workbook.Sheets[name], { defval: '' }),
+    }), {});
+    setStaticSheets(staticSheetObjects);
+  };
+
+  const readTextFile = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target.result;
+      try {
+        resolve(content);
+      } catch (e) {
+        reject(e);
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  const parseMetadataInTsv = (content) => {
+    const FLOAT = /^\s*-?(\d*\.?\d+|\d+\.?\d*)(e[-+]?\d+)?\s*$/i;
+    const defval = (value) => {
+      let output = value;
+      if (value === 'true' || value === 'TRUE') {
+        output = true;
+      } else if (value === 'false' || value === 'FALSE') {
+        output = false;
+      } else if (FLOAT.test(value)) {
+        output = parseFloat(value);
+      } else {
+        return value;
+      }
+      return output;
+    };
+    const parsed = Papa.parse(content, { header: true, delimiter: '\t', dynamicTyping: false, transform: defval });
+    if (!parsed.data || parsed.data.length === 0) {
+      throwInvalidFileError('Invalid metadata TSV file.', 'The file is empty.');
+    }
+    setData(parsed.data);
+    const schemaId = parsed.data[0].metadata_schema_id;
+    if (!schemaId) {
+      throwInvalidFileError('Invalid metadata TSV file.', 'The metadata_schema_id is missing in the file.');
+    }
+    setTemplateIri(`https://repo.metadatacenter.org/templates/${schemaId}`);
+  };
+
+  const openErrorDialog = (e) => {
+    setError(e);
+    setOpenDialog(true);
   };
 
   const handleChange = (file) => {
@@ -160,9 +213,13 @@ const Home = ({ setAppData }) => {
       setEnabled(true);
       const fileType = file.type;
       if (fileType === TSV) {
-        tsvReader().readAsText(file);
+        readTextFile(file)
+          .then(parseMetadataInTsv)
+          .catch(openErrorDialog);
       } else if (fileType === XLSX) {
-        excelReader().readAsArrayBuffer(file);
+        readBinaryFile(file)
+          .then(parseMetadataInExcel)
+          .catch(openErrorDialog);
       }
       setInputFileMetadata({
         name: file.name,
@@ -171,18 +228,21 @@ const Home = ({ setAppData }) => {
       });
     }
   };
+
   const getErrorLocations = (reporting) => {
     const completenessErrorReport = getCompletenessErrorReport(reporting);
     return completenessErrorReport
       .map((reportItem) => reportItem.column)
       .filter((value, index, arr) => arr.indexOf(value) === index);
   };
+
   const getErrorTypes = (reporting) => {
     const adherenceErrorReport = getAdherenceErrorReport(reporting);
     return adherenceErrorReport
       .map((reportItem) => reportItem.errorType)
       .filter((value, index, arr) => arr.indexOf(value) === index);
   };
+
   const submitSpreadsheet = async () => {
     try {
       setLoading(true);
