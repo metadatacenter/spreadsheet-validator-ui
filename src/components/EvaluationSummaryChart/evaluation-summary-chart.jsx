@@ -2,10 +2,10 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link, styled } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExcel } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import AppContext from '../../pages/AppContext';
+import { ReactComponent as XlsxIcon } from '../../assets/xlsx-file.svg';
+import { ReactComponent as TsvIcon } from '../../assets/tsv-file.svg';
 import Card from '../../styles/Card';
 import Block from '../../styles/Block';
 import Title from '../../styles/Title';
@@ -13,6 +13,7 @@ import SubTitle from '../../styles/SubTitle';
 import Paragraph from '../../styles/Paragraph';
 import BaseButton from '../../styles/BaseButton';
 import { COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from '../../constants/Router';
+import { XLSX, TSV } from '../../constants/MimeType';
 import { hasCompletenessErrors, hasAdherenceErrors } from '../../helpers/app-utils';
 
 const ChartBlock = styled(Block)({
@@ -73,7 +74,7 @@ const EvaluationSummaryChart = ({
 }) => {
   const navigate = useNavigate();
   const { appData } = useContext(AppContext);
-  const { reporting } = appData;
+  const { reporting, otherProps } = appData;
   return (
     <Card>
       <ChartBlock>
@@ -101,9 +102,12 @@ const EvaluationSummaryChart = ({
             {' '}
             Metadata
           </Title>
-          <SubTitle variant="h3" sx={{ paddingBottom: '40px' }}>
+          <SubTitle variant="h3" sx={{ paddingBottom: '35px', display: 'flex' }}>
             &nbsp;
-            <FontAwesomeIcon icon={faFileExcel} size="s" title="Input spreadsheet file" />
+            {otherProps.inputFileMetadata.type === XLSX
+              && <XlsxIcon style={{ width: '22px', height: '22px' }} title="Input spreadsheet file" />}
+            {otherProps.inputFileMetadata.type === TSV
+              && <TsvIcon style={{ width: '22px', height: '22px' }} title="Input spreadsheet file" />}
             &nbsp;
             {' '}
             {inputFileName}
@@ -136,7 +140,7 @@ const EvaluationSummaryChart = ({
             action.
           </Paragraph>
         </Block>
-        <Block textAlign="center" sx={{ paddingTop: '30px' }}>
+        <Block textAlign="center" sx={{ paddingTop: '20px' }}>
           <BaseButton
             sx={{ width: '330px' }}
             variant="contained"
