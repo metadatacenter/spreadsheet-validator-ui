@@ -39,7 +39,7 @@ const GenerateSpreadsheetButton = () => {
       <SpeedDialAction
         key="generate-tsv"
         icon={<TsvIcon style={{ width: '32px', height: '32px' }} />}
-        title="Save to TSV"
+        title="Download as TSV"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
           generateNewTsv(repairedData);
@@ -56,7 +56,7 @@ const GenerateSpreadsheetButton = () => {
       <SpeedDialAction
         key="generate-xlsx"
         icon={<XlsxIcon style={{ width: '32px', height: '32px' }} />}
-        title="Save to Excel"
+        title="Download as Excel"
         onClick={() => {
           const repairedData = applyPatches(data, patches);
           generateNewSpreadsheet(repairedData, staticSheets);

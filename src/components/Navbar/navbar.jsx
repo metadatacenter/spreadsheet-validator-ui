@@ -8,6 +8,7 @@ import AdherenceErrorNavMenu from '../NavMenu/AdherenceErrorNavMenu';
 import OverviewNavMenu from '../NavMenu/OverviewNavMenu';
 import { hasCompletenessErrors, hasAdherenceErrors, isRepairCompleted } from '../../helpers/app-utils';
 import { BLACK, GREEN, WHITE } from '../../constants/Color';
+import { XLSX, TSV } from '../../constants/MimeType';
 
 const NewButton = styled(Button)({
   color: WHITE,
@@ -28,17 +29,18 @@ const Banner = styled(Box)({
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [hide, setHide] = useState(true);
+  const [bannerhide, setBannerHide] = useState(true);
   const { appData, patches } = useContext(AppContext);
-  const { reporting } = appData;
-  const noErrorFound = reporting.length === 0;
+  const { reporting, otherProps } = appData;
+  const { inputFileMetadata } = otherProps;
+  const isInputSpreadsheetValid = reporting.length === 0;
 
   useEffect(
     () => {
       if (isRepairCompleted(reporting, patches)) {
-        setHide(false);
+        setBannerHide(false);
       } else {
-        setHide(true);
+        setBannerHide(true);
       }
     },
     [reporting, patches],
@@ -74,13 +76,11 @@ const Navbar = () => {
           </Box>
         </Toolbar>
       </Container>
-      <Collapse direction="down" in={!hide} mountOnEnter unmountOnExit>
+      <Collapse direction="down" in={!bannerhide} mountOnEnter unmountOnExit>
         <Banner>
-          {noErrorFound ? (
-            'No errors found. Please proceed to upload the spreadsheet to the'
-          ) : (
-            'Fix completed. Download the repaired spreadsheet and proceed to upload it to the'
-          )}
+          {isInputSpreadsheetValid && inputFileMetadata.type === XLSX && 'No error found. Please get the TSV format using the download button and upload it to the'}
+          {isInputSpreadsheetValid && inputFileMetadata.type === TSV && 'No error found. Please proceed to upload the spreadsheet to the'}
+          {!isInputSpreadsheetValid && 'Fix completed. Download the repaired spreadsheet in TSV format and proceed to upload it to the'}
           &nbsp;
           <Link
             href="http://ingest.hubmapconsortium.org"
