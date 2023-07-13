@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton, InputAdornment, Stack } from '@mui/material';
+import { IconButton, InputAdornment, Box } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import FilterInputField from '../DataSheet/FilterInputField';
 import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
-import { RED } from '../../constants/Color';
+import { DARK_GRAY, RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
 const HeaderWithFilter = ({ id, name, label, description, example, required, updateColumnFilters, setStaleBatch }) => {
@@ -49,20 +49,20 @@ const HeaderWithFilter = ({ id, name, label, description, example, required, upd
   };
   return (
     <HeaderCell>
-      <Stack direction="row" gap={1}>
+      <Box sx={{ display: 'flex', alignItems: 'end' }}>
         <HeaderLabel>
           {label}
           {required ? <span style={{ color: RED }}>*</span> : ''}
         </HeaderLabel>
         <InfoTooltip title={description}>
-          <HelpOutlineIcon fontSize="small" />
+          <HelpOutlineIcon fontSize="small" sx={{ color: DARK_GRAY, paddingLeft: '5px', paddingBottom: '13px' }} />
         </InfoTooltip>
         {example && (
           <InfoTooltip title={`Example: ${example}`}>
-            <InfoOutlinedIcon fontSize="small" />
+            <InfoOutlinedIcon fontSize="small" sx={{ color: DARK_GRAY, paddingLeft: '5px', paddingBottom: '13px' }} />
           </InfoTooltip>
         )}
-      </Stack>
+      </Box>
       <FilterInputField
         id={`${id}-column-filter-field`}
         onChange={handleFilterChange}

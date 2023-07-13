@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormControl, InputAdornment, IconButton, Stack } from '@mui/material';
+import { FormControl, InputAdornment, IconButton, Box } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -9,7 +9,7 @@ import SearchableSelector from '../DataSheet/SearchableSelector';
 import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
 import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME } from '../../constants/ValueType';
-import { RED } from '../../constants/Color';
+import { DARK_GRAY, RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, example, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
@@ -42,20 +42,20 @@ const HeaderWithBatchInput = ({ id, label, description, example, required, type,
   };
   return (
     <HeaderCell sx={{ minWidth: '220px' }} sticky>
-      <Stack direction="row" gap={1}>
+      <Box sx={{ display: 'flex', alignItems: 'end' }}>
         <HeaderLabel>
           {label}
           {required ? <span style={{ color: RED }}>*</span> : ''}
         </HeaderLabel>
         <InfoTooltip title={description}>
-          <HelpOutlineIcon fontSize="small" />
+          <HelpOutlineIcon fontSize="small" sx={{ color: DARK_GRAY, paddingLeft: '5px', paddingBottom: '13px' }} />
         </InfoTooltip>
         {example && (
           <InfoTooltip title={`Example: ${example}`}>
-            <InfoOutlinedIcon fontSize="small" />
+            <InfoOutlinedIcon fontSize="small" sx={{ color: DARK_GRAY, paddingLeft: '5px', paddingBottom: '13px' }} />
           </InfoTooltip>
         )}
-      </Stack>
+      </Box>
       <FormControl fullWidth>
         {permissibleValues && permissibleValues.length > 0
           ? (

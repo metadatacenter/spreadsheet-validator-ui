@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Checkbox, Collapse, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
+import { Box, Checkbox, Collapse, IconButton, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
@@ -38,20 +38,20 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
     <>
       <TableRow key={`summary-row-${id}`}>
         <SheetCell key={`target-column-cell-${id}`}>
-          <Stack direction="row" gap={1}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CellValue sx={{ fontWeight: 'bold', paddingLeft: '15px' }}>
               {targetColumnLabel}
               {required ? <span style={{ color: RED }}>*</span> : ''}
             </CellValue>
             <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
-              <HelpOutlineIcon fontSize="small" />
+              <HelpOutlineIcon fontSize="small" sx={{ color: DARK_GRAY, paddingLeft: '5px' }} />
             </InfoTooltip>
             {hasExample && (
               <InfoTooltip title={`Example: ${getValueExample(targetColumn, schema)}`}>
-                <InfoOutlinedIcon fontSize="small" />
+                <InfoOutlinedIcon fontSize="small" sx={{ color: DARK_GRAY, paddingLeft: '5px' }} />
               </InfoTooltip>
             )}
-          </Stack>
+          </Box>
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
