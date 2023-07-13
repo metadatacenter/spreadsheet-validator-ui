@@ -99,13 +99,13 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
         <SheetTableContainer>
           <SheetTable stickyHeader>
             <SheetHeader>
-              <HeaderCell align="center" width="30%">
+              <HeaderCell align="center" width="28%">
                 <HeaderLabel>Field name</HeaderLabel>
               </HeaderCell>
               <HeaderCell align="center" width="30%">
                 <HeaderLabel>Original value</HeaderLabel>
               </HeaderCell>
-              <HeaderCell align="center" width="30%">
+              <HeaderCell align="center" width="34%">
                 <HeaderLabel>New value</HeaderLabel>
               </HeaderCell>
               <HeaderWithCheckbox

@@ -55,17 +55,18 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CellValue>{value}</CellValue>
-            &nbsp;
-            <CellValue
-              sx={{
-                fontStyle: 'italic',
-                fontSize: '12pt',
-                color: DARK_GRAY,
-              }}
-            >
-              {printFrequency(rows)}
-            </CellValue>
+            <Box sx={{ width: '100%' }}>
+              <CellValue noWrap sx={{ paddingRight: '8px' }}>{value}</CellValue>
+              <CellValue
+                sx={{
+                  fontStyle: 'italic',
+                  fontSize: '12pt',
+                  color: DARK_GRAY,
+                }}
+              >
+                {printFrequency(rows)}
+              </CellValue>
+            </Box>
             <CellValue>
               <IconButton
                 aria-label="expand row"
