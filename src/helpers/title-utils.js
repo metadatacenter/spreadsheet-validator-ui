@@ -61,6 +61,8 @@ export const getActionButtonTitle = (errorType, column = '') => {
     title = 'Replace value with a number';
   } else if (errorType === 'notStringType') {
     title = 'Replace value with a string';
+  } else if (errorType === 'invalidUrl') {
+    title = 'Replace value with a valid URL';
   }
   return title;
 };
