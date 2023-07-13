@@ -14,7 +14,6 @@ import Paragraph from '../../styles/Paragraph';
 import BaseButton from '../../styles/BaseButton';
 import { COMPLETENESS_ERROR_PATH, ADHERENCE_ERROR_PATH } from '../../constants/Router';
 import { XLSX, TSV } from '../../constants/MimeType';
-import { hasCompletenessErrors, hasAdherenceErrors } from '../../helpers/app-utils';
 
 const ChartBlock = styled(Block)({
   width: '420px',
@@ -74,7 +73,7 @@ const EvaluationSummaryChart = ({
 }) => {
   const navigate = useNavigate();
   const { appData } = useContext(AppContext);
-  const { reporting, otherProps } = appData;
+  const { otherProps } = appData;
   return (
     <Card>
       <ChartBlock>
@@ -144,7 +143,7 @@ const EvaluationSummaryChart = ({
           <BaseButton
             sx={{ width: '330px' }}
             variant="contained"
-            disabled={!hasCompletenessErrors(reporting)}
+            disabled={!evaluationSummaryData.hasCompletenessErrors}
             onClick={() => navigate(`../${COMPLETENESS_ERROR_PATH}`)}
           >
             Repair Completeness Errors
@@ -152,7 +151,7 @@ const EvaluationSummaryChart = ({
           <BaseButton
             sx={{ width: '330px' }}
             variant="contained"
-            disabled={!hasAdherenceErrors(reporting)}
+            disabled={!evaluationSummaryData.hasAdherenceErrors}
             onClick={() => navigate(`../${ADHERENCE_ERROR_PATH}`)}
           >
             Repair Adherence Errors

@@ -43,6 +43,14 @@ const checkAdherenceError = (reportItem) => (
   || checkInvalidUrlError(reportItem)
 );
 
+export const hasCompletenessErrors = (reportingData) => (
+  reportingData.some((item) => checkCompletenessError(item))
+);
+
+export const hasAdherenceErrors = (reportingData) => (
+  reportingData.some((item) => checkAdherenceError(item))
+);
+
 export const generateEvaluationSummaryData = (spreadsheetData, reportingData) => {
   const dataSize = spreadsheetData.length;
   const errorSize = [...new Set(reportingData.map((item) => item.row))].length;
@@ -56,16 +64,10 @@ export const generateEvaluationSummaryData = (spreadsheetData, reportingData) =>
       data: [errorSize, validSize],
       backgroundColor: [RED, GREEN],
     }],
+    hasCompletenessErrors: hasCompletenessErrors(reportingData),
+    hasAdherenceErrors: hasAdherenceErrors(reportingData),
   };
 };
-
-export const hasCompletenessErrors = (reportingData) => (
-  reportingData.some((item) => checkCompletenessError(item))
-);
-
-export const hasAdherenceErrors = (reportingData) => (
-  reportingData.some((item) => checkAdherenceError(item))
-);
 
 export const generateMissingValueAnalysisChartData = (spreadsheetData, errorSummaryData) => ({
   columns: ['Field name', '# of invalid metadata records'],
