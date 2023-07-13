@@ -42,7 +42,7 @@ export const isColumnRequired = (column, schema) => {
 
 export const hasPermissibleValues = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
-  return 'permissibleValues' in columnSchema;
+  return columnSchema?.permissibleValues || false;
 };
 
 export const getPermissibleValues = (column, schema) => {
@@ -50,12 +50,8 @@ export const getPermissibleValues = (column, schema) => {
   return columnSchema.permissibleValues?.map((v) => v.label);
 };
 
-export const getMissingRequiredReporting = (reporting) => (
-  reporting.filter((reportItem) => reportItem.errorType === 'missingRequired')
-);
-
 export const getCompletenessErrorReport = (reporting) => (
-  getMissingRequiredReporting(reporting)
+  reporting.filter((reportItem) => reportItem.errorType === 'missingRequired')
 );
 
 export const getCompletenessErrorReportByColumn = (reporting, column) => (
@@ -63,18 +59,6 @@ export const getCompletenessErrorReportByColumn = (reporting, column) => (
     (reportItem) => reportItem.errorType === 'missingRequired'
       && reportItem.column === column,
   )
-);
-
-export const getNotStandardTermReporting = (reporting) => (
-  reporting.filter((reportItem) => reportItem.errorType === 'notStandardTerm')
-);
-
-export const getNotNumberTypeReporting = (reporting) => (
-  reporting.filter((reportItem) => reportItem.errorType === 'notNumberType')
-);
-
-export const getNotStringTypeReporting = (reporting) => (
-  reporting.filter((reportItem) => reportItem.errorType === 'notStringType')
 );
 
 export const getAdherenceErrorReport = (reporting) => (
