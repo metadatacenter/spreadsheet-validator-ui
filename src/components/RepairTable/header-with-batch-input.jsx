@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormControl, InputAdornment, IconButton, Stack } from '@mui/material';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import InputField from '../DataSheet/InputField';
@@ -11,7 +12,7 @@ import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME } from '../../constants/ValueT
 import { RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
-const HeaderWithBatchInput = ({ id, label, description, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
+const HeaderWithBatchInput = ({ id, label, description, example, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
   const [value, setValue] = useState('');
   const handleSelectionChange = (event, input) => {
     setValue(input);
@@ -47,8 +48,13 @@ const HeaderWithBatchInput = ({ id, label, description, required, type, permissi
           {required ? <span style={{ color: RED }}>*</span> : ''}
         </HeaderLabel>
         <InfoTooltip title={description}>
-          <InfoOutlinedIcon fontSize="small" />
+          <HelpOutlineIcon fontSize="small" />
         </InfoTooltip>
+        {example && (
+          <InfoTooltip title={`Example: ${example}`}>
+            <InfoOutlinedIcon fontSize="small" />
+          </InfoTooltip>
+        )}
       </Stack>
       <FormControl fullWidth>
         {permissibleValues && permissibleValues.length > 0
@@ -97,6 +103,7 @@ HeaderWithBatchInput.propTypes = {
   label: PropTypes.string.isRequired,
   type: PropTypes.oneOf([STRING, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
   description: PropTypes.string,
+  example: PropTypes.string,
   required: PropTypes.bool,
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
   setBatchInput: PropTypes.func.isRequired,
@@ -107,6 +114,7 @@ HeaderWithBatchInput.defaultProps = {
   id: undefined,
   type: STRING,
   description: undefined,
+  example: undefined,
   required: false,
   permissibleValues: undefined,
 };

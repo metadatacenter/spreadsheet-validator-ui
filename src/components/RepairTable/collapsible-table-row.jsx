@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Box, Checkbox, Collapse, IconButton, Stack, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import SheetHeader from '../DataSheet/SheetHeader';
@@ -9,7 +10,7 @@ import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
 import { SheetTable } from './styled';
-import { getColumnDescription, getColumnLabel, getColumnType, getPermissibleValues, isColumnRequired } from '../../helpers/data-utils';
+import { getColumnDescription, getColumnLabel, getColumnType, getPermissibleValues, getValueExample, hasValueExample, isColumnRequired } from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, GREEN, LIGHTER_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
 import EditableSheetCell from './editable-sheet-cell';
@@ -31,6 +32,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
   const { id, column: targetColumn, value, rows, records } = rowData;
   const targetColumnLabel = getColumnLabel(targetColumn, schema);
   const required = isColumnRequired(targetColumn, schema);
+  const hasExample = hasValueExample(targetColumn, schema);
 
   return (
     <>
@@ -42,8 +44,13 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
               {required ? <span style={{ color: RED }}>*</span> : ''}
             </CellValue>
             <InfoTooltip title={getColumnDescription(targetColumn, schema)}>
-              <InfoOutlinedIcon fontSize="small" />
+              <HelpOutlineIcon fontSize="small" />
             </InfoTooltip>
+            {hasExample && (
+              <InfoTooltip title={`Example: ${getValueExample(targetColumn, schema)}`}>
+                <InfoOutlinedIcon fontSize="small" />
+              </InfoTooltip>
+            )}
           </Stack>
         </SheetCell>
         <SheetCell key={`target-value-cell-${id}`}>

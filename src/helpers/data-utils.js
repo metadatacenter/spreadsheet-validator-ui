@@ -25,6 +25,16 @@ export const getColumnDescription = (column, schema) => {
   return columnSchema.description;
 };
 
+export const getValueExample = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.example;
+};
+
+export const hasValueExample = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema?.example || false;
+};
+
 export const isColumnRequired = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema.required;

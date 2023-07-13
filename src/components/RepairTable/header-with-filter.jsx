@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { IconButton, InputAdornment, Stack } from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import PropTypes from 'prop-types';
 import FilterInputField from '../DataSheet/FilterInputField';
@@ -10,7 +11,7 @@ import { HeaderCell, HeaderLabel } from './styled';
 import { RED } from '../../constants/Color';
 
 // eslint-disable-next-line max-len
-const HeaderWithFilter = ({ id, name, label, description, required, updateColumnFilters, setStaleBatch }) => {
+const HeaderWithFilter = ({ id, name, label, description, example, required, updateColumnFilters, setStaleBatch }) => {
   const [filterEnabled, setFilterEnabled] = useState(true);
   const handleFilterChange = (event) => {
     const enteredValue = event.target.value;
@@ -54,8 +55,13 @@ const HeaderWithFilter = ({ id, name, label, description, required, updateColumn
           {required ? <span style={{ color: RED }}>*</span> : ''}
         </HeaderLabel>
         <InfoTooltip title={description}>
-          <InfoOutlinedIcon fontSize="small" />
+          <HelpOutlineIcon fontSize="small" />
         </InfoTooltip>
+        {example && (
+          <InfoTooltip title={`Example: ${example}`}>
+            <InfoOutlinedIcon fontSize="small" />
+          </InfoTooltip>
+        )}
       </Stack>
       <FilterInputField
         id={`${id}-column-filter-field`}
@@ -77,6 +83,7 @@ HeaderWithFilter.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   description: PropTypes.string,
+  example: PropTypes.string,
   required: PropTypes.bool,
   updateColumnFilters: PropTypes.func.isRequired,
   setStaleBatch: PropTypes.func.isRequired,
@@ -85,6 +92,7 @@ HeaderWithFilter.propTypes = {
 HeaderWithFilter.defaultProps = {
   id: undefined,
   description: undefined,
+  example: undefined,
   required: false,
 };
 
