@@ -65,7 +65,7 @@ const SubmitBox = styled(Box)({
 });
 
 const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
-  const url = 'http://localhost:9094/service/validate';
+  const url = '/service/validate';
   const requestOptions = {
     method: 'POST',
     headers: {

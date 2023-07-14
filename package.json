@@ -2,6 +2,7 @@
   "name": "spreadsheet-validator-ui",
   "version": "1.2.2",
   "private": true,
+  "proxy": "http://localhost:9094",
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
