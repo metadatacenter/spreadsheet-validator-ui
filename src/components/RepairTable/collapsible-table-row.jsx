@@ -28,6 +28,8 @@ const printFrequency = (rows) => {
 // eslint-disable-next-line max-len
 const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserInput }) => {
   const [open, setOpen] = useState(false);
+  const [updateTooltipTextTimeout, setUpdateTooltipTextTimeout] = useState(0);
+  const [copyTooltipText, setCopyTooltipText] = useState('Click to copy');
 
   const { id, column: targetColumn, value, rows, records } = rowData;
   const targetColumnLabel = getColumnLabel(targetColumn, schema);
@@ -56,7 +58,22 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
         <SheetCell key={`target-value-cell-${id}`}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%' }}>
-              <CellValue noWrap sx={{ paddingRight: '8px' }}>{value}</CellValue>
+              <CellValue noWrap sx={{ paddingRight: '8px', userSelect: 'auto' }}>
+                <InfoTooltip title={copyTooltipText} placement="left" arrow>
+                  <Typography
+                    onClick={() => {
+                      navigator.clipboard.writeText(value);
+                      setCopyTooltipText('Copied!');
+                      setUpdateTooltipTextTimeout(setTimeout(() => setCopyTooltipText('Click to copy'), 5000));
+                    }}
+                    onMouseEnter={() => setCopyTooltipText('Click to copy')}
+                    onMouseLeave={() => clearTimeout(updateTooltipTextTimeout)}
+                    sx={{ cursor: 'pointer' }}
+                  >
+                    {value}
+                  </Typography>
+                </InfoTooltip>
+              </CellValue>
               <CellValue
                 sx={{
                   fontStyle: 'italic',
