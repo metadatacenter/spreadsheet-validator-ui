@@ -21,7 +21,7 @@ const showErrorIcon = (message) => (
 // eslint-disable-next-line max-len
 const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, onSave, highlightEmpty }) => {
   const [newValue, setNewValue] = useState(value);
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
   const [adornment, setAdornment] = useState(null);
 
   useEffect(() => setNewValue(value), [value]);
@@ -34,9 +34,6 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
           if (response.status >= 400 && response.status < 600) {
             throw new Error('Bad response from server');
           }
-          setValid(true);
-          onSave(userInput);
-          setAdornment(null);
         })
         .catch(() => {
           setValid(false);
@@ -53,6 +50,10 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
   const handleValidation = (userInput) => {
     if (type === URL) {
       handleUrlCheck(userInput);
+    } else {
+      setValid(true);
+      onSave(userInput);
+      setAdornment(null);
     }
   };
 
