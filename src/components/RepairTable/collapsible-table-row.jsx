@@ -61,6 +61,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
               <CellValue noWrap sx={{ paddingRight: '8px', userSelect: 'auto' }}>
                 <InfoTooltip title={copyTooltipText} placement="left" arrow>
                   <Typography
+                    component="span"
                     onClick={() => {
                       navigator.clipboard.writeText(value);
                       setCopyTooltipText('Copied!');
