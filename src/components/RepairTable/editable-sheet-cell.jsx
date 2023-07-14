@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FormControl, IconButton, InputAdornment, Typography, Tooltip } from '@mui/material';
+import { FormControl, IconButton, InputAdornment, Typography, Tooltip, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 import PropTypes from 'prop-types';
 import SheetCell from '../DataSheet/SheetCell';
@@ -8,10 +8,16 @@ import SearchableSelector from '../DataSheet/SearchableSelector';
 import { LIGHT_RED } from '../../constants/Color';
 import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME, URL } from '../../constants/ValueType';
 
+const showCircularProgress = () => (
+  <InputAdornment position="end">
+    <CircularProgress size={20} />
+  </InputAdornment>
+);
+
 const showErrorIcon = (message) => (
   <InputAdornment position="end">
     <Tooltip title={<Typography fontSize={15}>{message}</Typography>}>
-      <IconButton>
+      <IconButton sx={{ paddingRight: 0 }}>
         <ErrorIcon color="error" />
       </IconButton>
     </Tooltip>
@@ -23,33 +29,42 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
   const [newValue, setNewValue] = useState(value);
   const [valid, setValid] = useState(true);
   const [adornment, setAdornment] = useState(null);
+  const [typingTimeout, setTypingTimeout] = useState(0);
 
   useEffect(() => setNewValue(value), [value]);
 
   const handleUrlCheck = (userInput) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     if (urlRegex.test(userInput)) {
-      fetch(userInput, { method: 'HEAD', mode: 'no-cors' })
-        .then((response) => {
-          if (response.status >= 400 && response.status < 600) {
-            throw new Error('Bad response from server');
+      setAdornment(showCircularProgress());
+      fetch(userInput, { method: 'HEAD' })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status >= 400 && data.status < 600) {
+            throw new Error(data.status);
+          } else {
+            setValid(true);
+            onSave(userInput);
+            setAdornment(null);
           }
         })
         .catch(() => {
           setValid(false);
-          onSave(null);
           setAdornment(showErrorIcon('URL does not exist'));
         });
     } else {
       setValid(false);
-      onSave(null);
       setAdornment(showErrorIcon('URL is not valid'));
     }
   };
 
   const handleValidation = (userInput) => {
     if (type === URL) {
-      handleUrlCheck(userInput);
+      if (typingTimeout) {
+        setAdornment(null);
+        clearTimeout(typingTimeout);
+      }
+      setTypingTimeout(setTimeout(() => handleUrlCheck(userInput), 1000));
     } else {
       setValid(true);
       onSave(userInput);
