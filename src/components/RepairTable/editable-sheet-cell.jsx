@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FormControl, IconButton, InputAdornment, Typography, Tooltip, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
+import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
 import PropTypes from 'prop-types';
 import SheetCell from '../DataSheet/SheetCell';
 import InputField from '../DataSheet/InputField';
@@ -21,6 +22,14 @@ const showErrorIcon = (message) => (
         <ErrorIcon color="error" />
       </IconButton>
     </Tooltip>
+  </InputAdornment>
+);
+
+const showOpenLinkIcon = (url) => (
+  <InputAdornment position="end">
+    <IconButton sx={{ paddingRight: 0 }}>
+      <FileDownloadDoneIcon color="primary" onClick={() => window.open(url, '_blank')} />
+    </IconButton>
   </InputAdornment>
 );
 
@@ -45,7 +54,7 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
           } else {
             setValid(true);
             onSave(userInput);
-            setAdornment(null);
+            setAdornment(showOpenLinkIcon(userInput));
           }
         })
         .catch(() => {
