@@ -46,20 +46,21 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     if (urlRegex.test(userInput)) {
       setAdornment(showCircularProgress());
-      fetch(userInput, { method: 'HEAD' })
+      fetch('/service/url-checker', {
+        method: 'POST',
+        body: userInput,
+        headers: { 'Content-Type': 'text/plain' },
+      })
         .then((response) => response.json())
-        .then((data) => {
-          if (data.status >= 400 && data.status < 600) {
-            throw new Error(data.status);
-          } else {
+        .then((answer) => {
+          if (answer.isReachable) {
             setValid(true);
             onSave(userInput);
             setAdornment(showOpenLinkIcon(userInput));
+          } else {
+            setValid(false);
+            setAdornment(showErrorIcon('URL does not exist'));
           }
-        })
-        .catch(() => {
-          setValid(false);
-          setAdornment(showErrorIcon('URL does not exist'));
         });
     } else {
       setValid(false);
