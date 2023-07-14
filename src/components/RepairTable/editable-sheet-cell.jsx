@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormControl, IconButton, InputAdornment, Typography, Tooltip } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 import PropTypes from 'prop-types';
@@ -23,6 +23,8 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
   const [newValue, setNewValue] = useState(value);
   const [valid, setValid] = useState(false);
   const [adornment, setAdornment] = useState(null);
+
+  useEffect(() => setNewValue(value), [value]);
 
   const handleUrlCheck = (userInput) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
