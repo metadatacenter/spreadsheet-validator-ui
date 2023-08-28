@@ -1,33 +1,28 @@
-import ReactGA from 'react-ga';
+import gtag from 'ga-gtag';
 
-const useBatchFillout = () => ReactGA.event({
-  category: 'Repair Completeness',
-  action: 'batch_fillout',
-  label: 'Using batch fillout feature',
+const useBatchFillout = () => gtag('event', 'batch_fillout', {
+  event_category: 'Repair Completeness',
+  event_label: 'Using batch fillout feature',
 });
 
-const useColumnFilter = () => ReactGA.event({
-  category: 'Repair Completeness',
-  action: 'column_filter',
-  label: 'Using column filter feature',
+const useColumnFilter = () => gtag('event', 'column_filter', {
+  event_category: 'Repair Completeness',
+  event_label: 'Using column filter feature',
 });
 
-const acceptAllSuggestions = () => ReactGA.event({
-  category: 'Repair Adherence',
-  action: 'accept_all_suggestions',
-  label: 'Accepting all repair suggestions',
+const acceptAllSuggestions = () => gtag('event', 'accept_all_suggestions', {
+  event_category: 'Repair Adherence',
+  event_label: 'Accepting all repair suggestions',
 });
 
-const acceptSuggestion = () => ReactGA.event({
-  category: 'Repair Adherence',
-  action: 'accept_suggestion',
-  label: 'Accepting single repair suggestion',
+const acceptSuggestion = () => gtag('event', 'accept_suggestion', {
+  event_category: 'Repair Adherence',
+  event_label: 'Accepting single repair suggestion',
 });
 
-const rejectSuggestion = () => ReactGA.event({
-  category: 'Repair Adherence',
-  action: 'reject_suggestion',
-  label: 'Rejecting single repair suggestion',
+const rejectSuggestion = () => gtag('event', 'reject_suggestion', {
+  event_category: 'Repair Adherence',
+  event_label: 'Rejecting single repair suggestion',
 });
 
 const gaEvents = {
