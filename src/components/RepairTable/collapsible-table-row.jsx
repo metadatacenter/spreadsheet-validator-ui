@@ -15,7 +15,6 @@ import { BLACK, DARK_GRAY, GREEN, LIGHTER_GRAY, RED } from '../../constants/Colo
 import { nullOnEmpty } from '../../helpers/string-utils';
 import EditableSheetCell from './editable-sheet-cell';
 import StaticSheetCell from './static-sheet-cell';
-import gaEvents from '../../events';
 
 const CellValue = styled(Typography)({
   fontSize: '17px',
@@ -113,7 +112,6 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
                 approved: true,
               };
             });
-            gaEvents.rejectSuggestion();
           }}
           highlightEmpty={required || (!required && !userInput[id]?.approved)}
         />
@@ -132,7 +130,6 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
                   approved,
                 };
               });
-              gaEvents.acceptSuggestion();
             }}
             checked={userInput[id]?.approved || false}
           />

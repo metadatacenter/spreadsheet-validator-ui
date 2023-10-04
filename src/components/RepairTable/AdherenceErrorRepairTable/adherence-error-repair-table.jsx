@@ -20,7 +20,6 @@ import HtmlTooltip from '../html-tooltip';
 import { initUserInput } from './function';
 import { ButtonPanel, CancelButton, DataSheetCard, FooterPanel, HeaderCell, HeaderLabel, SaveAndRepairNextButton, SaveButton, SheetTable, SheetTableContainer } from '../styled';
 import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
-import gaEvents from '../../../events';
 
 const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
   const navigate = useNavigate();
@@ -120,7 +119,6 @@ const AdherenceErrorRepairTable = ({ errorType, tableData }) => {
                       currentUserInput[id].approved = event.target.checked;
                     });
                   });
-                  gaEvents.acceptAllSuggestions();
                 }}
               />
             </SheetHeader>

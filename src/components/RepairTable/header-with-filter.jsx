@@ -9,7 +9,6 @@ import FilterInputField from '../DataSheet/FilterInputField';
 import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
 import { DARK_GRAY, RED } from '../../constants/Color';
-import gaEvents from '../../events';
 
 // eslint-disable-next-line max-len
 const HeaderWithFilter = ({ id, name, label, description, example, required, updateColumnFilters, setStaleBatch }) => {
@@ -47,7 +46,6 @@ const HeaderWithFilter = ({ id, name, label, description, example, required, upd
     });
     setStaleBatch(true);
     event.preventDefault();
-    gaEvents.useColumnFilter();
   };
   return (
     <HeaderCell>

@@ -10,7 +10,6 @@ import InfoTooltip from './info-tooltip';
 import { HeaderCell, HeaderLabel } from './styled';
 import { DATE, EMAIL, NUMBER, PHONE, STRING, TIME } from '../../constants/ValueType';
 import { DARK_GRAY, RED } from '../../constants/Color';
-import gaEvents from '../../events';
 
 // eslint-disable-next-line max-len
 const HeaderWithBatchInput = ({ id, label, description, example, required, type, permissibleValues, setBatchInput, setStaleBatch }) => {
@@ -33,14 +32,12 @@ const HeaderWithBatchInput = ({ id, label, description, example, required, type,
     setBatchInput(value);
     setStaleBatch(false);
     event.preventDefault();
-    gaEvents.useBatchFillout();
   };
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       setBatchInput(value);
       setStaleBatch(false);
       event.preventDefault();
-      gaEvents.useBatchFillout();
     }
   };
   return (
