@@ -69,7 +69,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%' }}>
               <CellValue noWrap sx={{ paddingRight: '8px', userSelect: 'auto' }}>
-                <InfoTooltip title={copyTooltipText} placement="left" arrow>
+                <InfoTooltip title={copyTooltipText} placement="right" arrow>
                   <Typography
                     component="span"
                     onClick={() => {
