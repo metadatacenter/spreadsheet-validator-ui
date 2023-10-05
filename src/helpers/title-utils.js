@@ -27,6 +27,8 @@ export const getTotalErrorCountTitle = (report, errorType, column = '') => {
     title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not a string`;
   } else if (errorType === 'invalidUrl') {
     title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not a valid URL string`;
+  } else if (errorType === 'invalidValueFormat') {
+    title = `Found ${errorSize} ${errorSize === 1 ? 'value that is' : 'values that are'} not matching the expected string format`;
   }
   return title;
 };
@@ -43,6 +45,8 @@ export const getNavigationSubMenuTitle = (errorType, column = '') => {
     title = 'Value is not string';
   } else if (errorType === 'invalidUrl') {
     title = 'Value is not a valid URL';
+  } else if (errorType === 'invalidValueFormat') {
+    title = 'Value is not in valid format';
   }
   return title;
 };
@@ -63,6 +67,8 @@ export const getActionButtonTitle = (errorType, column = '') => {
     title = 'Replace value with a string';
   } else if (errorType === 'invalidUrl') {
     title = 'Replace value with a valid URL';
+  } else if (errorType === 'invalidValueFormat') {
+    title = 'Replace value with the expected string format';
   }
   return title;
 };

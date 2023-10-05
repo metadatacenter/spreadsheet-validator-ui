@@ -36,11 +36,16 @@ const checkInvalidUrlError = (reportItem) => (
   reportItem.errorType === 'invalidUrl'
 );
 
+const checkInvalidValueFormatError = (reportItem) => (
+  reportItem.errorType === 'invalidValueFormat'
+);
+
 const checkAdherenceError = (reportItem) => (
   checkNotStandardTermError(reportItem)
   || checkNotNumberTypeError(reportItem)
   || checkNotStringTypeError(reportItem)
   || checkInvalidUrlError(reportItem)
+  || checkInvalidValueFormatError(reportItem)
 );
 
 export const hasCompletenessErrors = (reportingData) => (
@@ -217,11 +222,27 @@ const getInvalidUrlButtonItemData = (errorSummary, patches) => {
   return null;
 };
 
+const getInvalidValueFormatButtonItemData = (errorSummary, patches) => {
+  const filteredSummary = errorSummary.filter(
+    (reportItem) => checkInvalidValueFormatError(reportItem),
+  );
+  if (filteredSummary.length > 0) {
+    return {
+      errorId: 'invalid-value-format-error',
+      errorType: 'invalidValueFormat',
+      errorCount: countRemainingErrorsFromErrorSummary(filteredSummary, patches),
+      errorLocation: null,
+    };
+  }
+  return null;
+};
+
 export const generateAdherenceErrorStatusList = (errorSummary, patches) => [
   getNotStandardTermButtonItemData(errorSummary, patches),
   getNotNumberTypeButtonItemData(errorSummary, patches),
   getNotStringTypeButtonItemData(errorSummary, patches),
   getInvalidUrlButtonItemData(errorSummary, patches),
+  getInvalidValueFormatButtonItemData(errorSummary, patches),
 ].filter(
   (item) => item !== null,
 );

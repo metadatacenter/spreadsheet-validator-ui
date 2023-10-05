@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FormControl, IconButton, InputAdornment, Typography, Tooltip, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
-import FileDownloadDoneIcon from '@mui/icons-material/FileDownloadDone';
+import CheckIcon from '@mui/icons-material/Check';
 import PropTypes from 'prop-types';
 import SheetCell from '../DataSheet/SheetCell';
 import InputField from '../DataSheet/InputField';
@@ -25,16 +25,28 @@ const showErrorIcon = (message) => (
   </InputAdornment>
 );
 
-const showOpenLinkIcon = (url) => (
+const showCheckIcon = (message) => (
   <InputAdornment position="end">
-    <IconButton sx={{ paddingRight: 0 }}>
-      <FileDownloadDoneIcon color="primary" onClick={() => window.open(url, '_blank')} />
-    </IconButton>
+    <Tooltip title={<Typography fontSize={15}>{message}</Typography>}>
+      <IconButton sx={{ paddingRight: 0 }}>
+        <CheckIcon color="primary" />
+      </IconButton>
+    </Tooltip>
+  </InputAdornment>
+);
+
+const showOpenLinkIcon = (url, message) => (
+  <InputAdornment position="end">
+    <Tooltip title={<Typography fontSize={15}>{message}</Typography>}>
+      <IconButton sx={{ paddingRight: 0 }} onClick={() => window.open(url, '_blank')}>
+        <CheckIcon color="primary" />
+      </IconButton>
+    </Tooltip>
   </InputAdornment>
 );
 
 // eslint-disable-next-line max-len
-const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, onSave, highlightEmpty }) => {
+const EditableSheetCell = ({ value, type, inputPattern, permissibleValues, sticky, inputRef, onSave, highlightEmpty }) => {
   const [newValue, setNewValue] = useState(value);
   const [valid, setValid] = useState(true);
   const [adornment, setAdornment] = useState(null);
@@ -45,7 +57,6 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
   const handleUrlCheck = (userInput) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     if (urlRegex.test(userInput)) {
-      setAdornment(showCircularProgress());
       fetch('/service/url-checker', {
         method: 'POST',
         body: userInput,
@@ -56,7 +67,7 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
           if (answer.isReachable) {
             setValid(true);
             onSave(userInput);
-            setAdornment(showOpenLinkIcon(userInput));
+            setAdornment(showOpenLinkIcon(userInput, 'Click to open page'));
           } else {
             setValid(false);
             setAdornment(showErrorIcon('URL does not exist'));
@@ -68,13 +79,37 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
     }
   };
 
+  const handleStringPatternCheck = (userInput) => {
+    const regex = new RegExp(inputPattern);
+    if (regex.test(userInput)) {
+      setValid(true);
+      onSave(userInput);
+      setAdornment(showCheckIcon('Input matches pattern'));
+    } else {
+      setValid(false);
+      setAdornment(showErrorIcon('Input does not match pattern'));
+    }
+  };
+
   const handleValidation = (userInput) => {
     if (type === URL) {
       if (typingTimeout) {
-        setAdornment(null);
+        setAdornment(showCircularProgress());
         clearTimeout(typingTimeout);
       }
       setTypingTimeout(setTimeout(() => handleUrlCheck(userInput), 1000));
+    } else if (type === STRING) {
+      if (inputPattern) {
+        if (typingTimeout) {
+          setAdornment(showCircularProgress());
+          clearTimeout(typingTimeout);
+        }
+        setTypingTimeout(setTimeout(() => handleStringPatternCheck(userInput), 1000));
+      } else {
+        setValid(true);
+        onSave(userInput);
+        setAdornment(null);
+      }
     } else {
       setValid(true);
       onSave(userInput);
@@ -120,6 +155,7 @@ const EditableSheetCell = ({ value, type, permissibleValues, sticky, inputRef, o
 EditableSheetCell.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool]).isRequired,
   type: PropTypes.oneOf([STRING, NUMBER, DATE, TIME, EMAIL, URL, PHONE]),
+  inputPattern: PropTypes.string,
   permissibleValues: PropTypes.arrayOf(PropTypes.string),
   sticky: PropTypes.bool,
   inputRef: PropTypes.oneOfType([PropTypes.object]),
@@ -129,6 +165,7 @@ EditableSheetCell.propTypes = {
 
 EditableSheetCell.defaultProps = {
   type: STRING,
+  inputPattern: undefined,
   permissibleValues: undefined,
   inputRef: undefined,
   sticky: false,

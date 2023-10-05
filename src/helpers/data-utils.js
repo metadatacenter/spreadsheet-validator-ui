@@ -40,6 +40,16 @@ export const isColumnRequired = (column, schema) => {
   return columnSchema.required;
 };
 
+export const hasStringPattern = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema?.regex || false;
+};
+
+export const getStringPattern = (column, schema) => {
+  const columnSchema = getColumnSchema(column, schema);
+  return columnSchema.regex;
+};
+
 export const hasPermissibleValues = (column, schema) => {
   const columnSchema = getColumnSchema(column, schema);
   return columnSchema?.permissibleValues || false;
@@ -66,7 +76,8 @@ export const getAdherenceErrorReport = (reporting) => (
     (reportItem) => reportItem.errorType === 'notStandardTerm'
       || reportItem.errorType === 'notNumberType'
       || reportItem.errorType === 'notStringType'
-      || reportItem.errorType === 'invalidUrl',
+      || reportItem.errorType === 'invalidUrl'
+      || reportItem.errorType === 'invalidValueFormat',
   )
 );
 

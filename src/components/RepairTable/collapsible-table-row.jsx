@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import { useState } from 'react';
 import { Box, Checkbox, Collapse, IconButton, styled, TableRow, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -10,7 +11,16 @@ import SheetBody from '../DataSheet/SheetBody';
 import SheetCell from '../DataSheet/SheetCell';
 import InfoTooltip from './info-tooltip';
 import { SheetTable } from './styled';
-import { getColumnDescription, getColumnLabel, getColumnType, getPermissibleValues, getValueExample, hasValueExample, isColumnRequired } from '../../helpers/data-utils';
+import {
+  getColumnDescription,
+  getColumnLabel,
+  getColumnType,
+  getStringPattern,
+  getPermissibleValues,
+  getValueExample,
+  hasValueExample,
+  isColumnRequired,
+} from '../../helpers/data-utils';
 import { BLACK, DARK_GRAY, GREEN, LIGHTER_GRAY, RED } from '../../constants/Color';
 import { nullOnEmpty } from '../../helpers/string-utils';
 import EditableSheetCell from './editable-sheet-cell';
@@ -100,6 +110,7 @@ const CollapsibleTableRow = ({ rowData, schema, inputRef, userInput, updateUserI
           key={`suggested-value-cell-${id}`}
           value={userInput[id]?.value || ''}
           type={getColumnType(targetColumn, schema)}
+          inputPattern={getStringPattern(targetColumn, schema)}
           permissibleValues={getPermissibleValues(targetColumn, schema)}
           inputRef={inputRef}
           onSave={(userValue) => {
