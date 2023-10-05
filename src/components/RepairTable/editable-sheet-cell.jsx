@@ -18,9 +18,7 @@ const showCircularProgress = () => (
 const showErrorIcon = (message) => (
   <InputAdornment position="end">
     <Tooltip title={<Typography fontSize={15}>{message}</Typography>}>
-      <IconButton sx={{ paddingRight: 0 }}>
-        <ErrorIcon color="error" />
-      </IconButton>
+      <ErrorIcon color="error" />
     </Tooltip>
   </InputAdornment>
 );
@@ -28,9 +26,7 @@ const showErrorIcon = (message) => (
 const showCheckIcon = (message) => (
   <InputAdornment position="end">
     <Tooltip title={<Typography fontSize={15}>{message}</Typography>}>
-      <IconButton sx={{ paddingRight: 0 }}>
-        <CheckIcon color="primary" />
-      </IconButton>
+      <CheckIcon color="primary" />
     </Tooltip>
   </InputAdornment>
 );
@@ -38,7 +34,7 @@ const showCheckIcon = (message) => (
 const showOpenLinkIcon = (url, message) => (
   <InputAdornment position="end">
     <Tooltip title={<Typography fontSize={15}>{message}</Typography>}>
-      <IconButton sx={{ paddingRight: 0 }} onClick={() => window.open(url, '_blank')}>
+      <IconButton onClick={() => window.open(url, '_blank')}>
         <CheckIcon color="primary" />
       </IconButton>
     </Tooltip>
