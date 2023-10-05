@@ -9,6 +9,7 @@ const InputField = (
 ) => (
   <OutlinedInput
     fullWidth
+    multiline
     key={id}
     size="small"
     value={value}
