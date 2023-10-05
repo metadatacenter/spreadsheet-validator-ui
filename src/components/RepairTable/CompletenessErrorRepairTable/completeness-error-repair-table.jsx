@@ -135,6 +135,7 @@ const CompletenessErrorRepairTable = ({ targetColumn, tableData }) => {
                       example={getValueExample(column, schema)}
                       required={isColumnRequired(column, schema)}
                       type={getColumnType(column, schema)}
+                      inputPattern={getStringPattern(column, schema)}
                       permissibleValues={getPermissibleValues(column, schema)}
                       setBatchInput={setBatchInput}
                       setStaleBatch={setStaleBatch}
