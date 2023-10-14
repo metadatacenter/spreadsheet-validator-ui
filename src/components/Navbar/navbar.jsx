@@ -1,8 +1,10 @@
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppBar, Box, Button, Toolbar, Typography, Container, Link, Collapse, styled } from '@mui/material';
+import { AppBar, Box, IconButton, Toolbar, Typography, Container, Link, Collapse, styled } from '@mui/material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { PropTypes } from 'prop-types';
-import BuildCircleIcon from '@mui/icons-material/BuildCircle';
+import ArticleIcon from '@mui/icons-material/Article';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import AppContext from '../../pages/AppContext';
 import CompletenessErrorNavMenu from '../NavMenu/CompletenessErrorNavMenu';
 import AdherenceErrorNavMenu from '../NavMenu/AdherenceErrorNavMenu';
@@ -11,9 +13,20 @@ import { hasCompletenessErrors, hasAdherenceErrors, isRepairCompleted } from '..
 import { BLACK, GREEN, WHITE } from '../../constants/Color';
 import { XLSX, TSV } from '../../constants/MimeType';
 
-const NewButton = styled(Button)({
+const LightTooltip = styled(({ className, ...props }) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.common.white,
+    color: 'rgba(0, 0, 0, 0.87)',
+    boxShadow: theme.shadows[1],
+    fontSize: 11,
+  },
+}));
+
+const NewButton = styled(IconButton)({
   color: WHITE,
-  border: '1px solid WHITE',
   '&:hover': {
     color: BLACK,
     backgroundColor: WHITE,
@@ -51,7 +64,7 @@ const Navbar = ({ inputFileName }) => {
     <AppBar component="nav" position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <BuildCircleIcon fontSize="large" sx={{ paddingRight: 1 }} />
+          <ArticleIcon fontSize="large" sx={{ marginRight: '12px' }} />
           <Typography
             variant="h6"
             noWrap
@@ -60,17 +73,18 @@ const Navbar = ({ inputFileName }) => {
               display: { xs: 'none', md: 'flex' },
               color: 'inherit',
               textDecoration: 'none',
+              marginRight: '30px',
             }}
           >
             {inputFileName}
           </Typography>
-          <Box>
-            <NewButton variant="outlined" onClick={() => navigate('..')}>
-              NEW VALIDATION
-            </NewButton>
-          </Box>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <LightTooltip title={<Typography sx={{ fontSize: '1.4em' }}>New validation</Typography>} placement="left">
+            <NewButton sx={{ marginRight: '10px' }} variant="outlined" onClick={() => navigate('..')}>
+              <PostAddIcon />
+            </NewButton>
+          </LightTooltip>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: '5px' }}>
             <OverviewNavMenu />
             {hasCompletenessErrors(reporting) && <CompletenessErrorNavMenu />}
             {hasAdherenceErrors(reporting) && <AdherenceErrorNavMenu />}
