@@ -57,14 +57,15 @@ const LandingPageContainer = () => (
 );
 
 const WorkspaceContainer = ({ appData }) => {
-  const { data } = appData;
+  const { data, otherProps } = appData;
   const initPatches = generateEmptyObjects(data.length);
   const [patches, updatePatches] = useImmer(initPatches);
   const appContextData = useMemo(() => ({ appData, patches, updatePatches }), [patches]);
+  const inputFileName = otherProps.inputFileMetadata.name;
   return (
     <AppContext.Provider value={appContextData}>
       <MainContainer>
-        <Navbar />
+        <Navbar inputFileName={inputFileName} />
         <ContentArea />
         <PageFooter />
         <HelpButton />
@@ -89,6 +90,11 @@ WorkspaceContainer.propTypes = {
         errorType: PropTypes.string.isRequired,
       }),
     ).isRequired,
+    otherProps: PropTypes.shape({
+      inputFileMetadata: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }).isRequired,
+    }).isRequired,
   }).isRequired,
 };
 

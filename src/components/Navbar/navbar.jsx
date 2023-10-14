@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppBar, Box, Button, Toolbar, Typography, Container, Link, Collapse, styled } from '@mui/material';
+import { PropTypes } from 'prop-types';
 import BuildCircleIcon from '@mui/icons-material/BuildCircle';
 import AppContext from '../../pages/AppContext';
 import CompletenessErrorNavMenu from '../NavMenu/CompletenessErrorNavMenu';
@@ -27,7 +28,7 @@ const Banner = styled(Box)({
   textAlign: 'center',
 });
 
-const Navbar = () => {
+const Navbar = ({ inputFileName }) => {
   const navigate = useNavigate();
   const [bannerhide, setBannerHide] = useState(true);
   const { appData, patches } = useContext(AppContext);
@@ -50,7 +51,7 @@ const Navbar = () => {
     <AppBar component="nav" position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <BuildCircleIcon sx={{ paddingRight: 1 }} />
+          <BuildCircleIcon fontSize="large" sx={{ paddingRight: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -61,7 +62,7 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            Metadata Spreadsheet Validator
+            {inputFileName}
           </Typography>
           <Box>
             <NewButton variant="outlined" onClick={() => navigate('..')}>
@@ -94,6 +95,10 @@ const Navbar = () => {
       </Collapse>
     </AppBar>
   );
+};
+
+Navbar.propTypes = {
+  inputFileName: PropTypes.string.isRequired,
 };
 
 export default Navbar;
