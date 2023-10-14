@@ -1,11 +1,11 @@
 import { useContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconButton, Badge, Menu, MenuItem, Chip, Divider, Typography } from '@mui/material';
+import { Button, Badge, Menu, MenuItem, Chip, Divider, Typography } from '@mui/material';
 import AppContext from '../../../pages/AppContext';
 import Panel from '../../../styles/Panel';
 import { add } from '../../../helpers/array-utils';
 import { getAdherenceErrorRepairTitle, getNavigationSubMenuTitle } from '../../../helpers/title-utils';
-import { GREEN, RED } from '../../../constants/Color';
+import { GREEN, RED, WHITE, BLACK } from '../../../constants/Color';
 import { ADHERENCE_ERROR_PATH } from '../../../constants/Router';
 import { generateAdherenceErrorStatusList, generateErrorSummaryReport } from '../../../helpers/app-utils';
 
@@ -38,20 +38,28 @@ const AdherenceErrorNavMenu = () => {
 
   return (
     <>
-      <IconButton
+      <Button
         key="icon-button-adherence-error"
-        size="small"
+        size="medium"
         color="inherit"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{ marginRight: '10px' }}
+        sx={{
+          textTransform: 'none',
+          fontSize: '1.08em',
+          marginRight: '5px',
+          '&:hover': {
+            color: BLACK,
+            backgroundColor: WHITE,
+          },
+        }}
       >
         <Badge badgeContent={totalErrorRemaining} color="error">
           {getAdherenceErrorRepairTitle()}
         </Badge>
-      </IconButton>
+      </Button>
       <Menu
         id="adherence-error-overview-menu"
         anchorEl={anchorEl}

@@ -1,11 +1,11 @@
 import { useContext, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { IconButton, Badge, Menu, MenuItem, Chip, Divider, Typography } from '@mui/material';
+import { Button, Badge, Menu, MenuItem, Chip, Divider, Typography } from '@mui/material';
 import AppContext from '../../../pages/AppContext';
 import Panel from '../../../styles/Panel';
 import { add } from '../../../helpers/array-utils';
 import { getCompletenessErrorRepairTitle, getNavigationSubMenuTitle } from '../../../helpers/title-utils';
-import { GREEN, RED } from '../../../constants/Color';
+import { GREEN, RED, WHITE, BLACK } from '../../../constants/Color';
 import { COMPLETENESS_ERROR_PATH } from '../../../constants/Router';
 import { generateCompletenessErrorStatusList, generateErrorSummaryReport } from '../../../helpers/app-utils';
 import { getColumnLabel } from '../../../helpers/data-utils';
@@ -39,20 +39,28 @@ const CompletenessErrorNavMenu = () => {
 
   return (
     <>
-      <IconButton
+      <Button
         key="completeness-error-icon-button"
-        size="small"
+        size="medium"
         color="inherit"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{ marginRight: '10px' }}
+        sx={{
+          textTransform: 'none',
+          fontSize: '1.08em',
+          marginRight: '5px',
+          '&:hover': {
+            color: BLACK,
+            backgroundColor: WHITE,
+          },
+        }}
       >
         <Badge badgeContent={totalErrorRemaining} color="error">
           {getCompletenessErrorRepairTitle()}
         </Badge>
-      </IconButton>
+      </Button>
       <Menu
         id="completeness-error-overview-menu"
         anchorEl={anchorEl}
