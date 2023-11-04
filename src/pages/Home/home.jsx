@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, Typography, styled, CircularProgress, Dialog, DialogContent, DialogContentText, DialogActions, DialogTitle, TextField } from '@mui/material';
+import { Box, Button, Typography, styled, CircularProgress, Dialog, DialogContent, DialogContentText, DialogActions, DialogTitle, TextField, Stack } from '@mui/material';
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 import { FileUploader } from 'react-drag-drop-files';
 import { read, utils } from 'xlsx';
 import Papa from 'papaparse';
@@ -11,7 +12,7 @@ import './home.css';
 import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpers/data-utils';
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { CEDAR_TEMPLATE_IRI, MAIN_SHEET, METADATA_SHEET } from '../../constants/Sheet';
-import { BLUE, LIGHTER_GRAY, LIGHT_YELLOW } from '../../constants/Color';
+import { BLACK, BLUE, LIGHTER_GRAY, WHITE, LIGHT_YELLOW } from '../../constants/Color';
 import { TSV, XLSX } from '../../constants/MimeType';
 
 const HomeContainer = styled(Container)({
@@ -62,6 +63,19 @@ const UploadBox = styled(Box)({
 const SubmitBox = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
+});
+
+const CustomWidthTooltip = styled(({ className, ...props }) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <Tooltip {...props} classes={{ popper: className }} />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 970,
+    color: BLACK,
+    backgroundColor: WHITE,
+    border: '1px solid #000',
+    borderRadius: 10,
+  },
 });
 
 const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
@@ -275,93 +289,118 @@ const Home = ({ setAppData }) => {
   const fileTypes = ['xlsx', 'tsv'];
   return (
     <HomeContainer>
-      <InputArea>
-        <LogoBox>
-          <img src={logo} alt="spreadsheet-validator-logo" />
-        </LogoBox>
-        <TaglineBox>
-          <h2>Upload and submit your spreadsheet file to validate the metadata records</h2>
-        </TaglineBox>
-        <InputSection>
-          <FileUploader
-            name="file"
-            hoverTitle=" "
-            handleChange={handleChange}
-            types={fileTypes}
-            dropMessageStyle={{ backgroundColor: LIGHT_YELLOW }}
+      <Stack direction="column">
+        <InputArea>
+          <LogoBox>
+            <img src={logo} alt="spreadsheet-validator-logo" />
+          </LogoBox>
+          <TaglineBox>
+            <h2>Upload and submit your spreadsheet file to validate the metadata records</h2>
+          </TaglineBox>
+          <InputSection>
+            <FileUploader
+              name="file"
+              hoverTitle=" "
+              handleChange={handleChange}
+              types={fileTypes}
+              dropMessageStyle={{ backgroundColor: LIGHT_YELLOW }}
+            >
+              <UploadBox>
+                <Typography sx={{ fontSize: '20px' }} color="text.secondary" gutterBottom>
+                  {inputFileMetadata ? `${inputFileMetadata.name}` : 'Drag & drop your spreadsheet file here'}
+                  {' '}
+                  or
+                  {' '}
+                  <u>Browse</u>
+                </Typography>
+              </UploadBox>
+            </FileUploader>
+          </InputSection>
+          <SubmitBox sx={{ position: 'relative' }}>
+            <BaseButton
+              variant="contained"
+              size="large"
+              onClick={submitSpreadsheet}
+              disabled={!enabled}
+              sx={{ padding: '12px 80px 12px 80px' }}
+            >
+              Start Validating
+            </BaseButton>
+            {loading && (
+              <CircularProgress
+                size={28}
+                title="Loading..."
+                sx={{
+                  color: BLUE,
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  marginTop: '-12px',
+                  marginLeft: '-12px',
+                }}
+              />
+            )}
+          </SubmitBox>
+          <Dialog
+            open={openDialog}
+            onClose={handleDialogClose}
+            maxWidth="lg"
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
           >
-            <UploadBox>
-              <Typography sx={{ fontSize: '20px' }} color="text.secondary" gutterBottom>
-                {inputFileMetadata ? `${inputFileMetadata.name}` : 'Drag & drop your spreadsheet file here'}
-                {' '}
-                or
-                {' '}
-                <u>Browse</u>
-              </Typography>
-            </UploadBox>
-          </FileUploader>
-        </InputSection>
-        <SubmitBox sx={{ position: 'relative' }}>
-          <BaseButton
-            variant="contained"
-            size="large"
-            onClick={submitSpreadsheet}
-            disabled={!enabled}
-            sx={{ padding: '12px 80px 12px 80px' }}
-          >
-            Start Validating
-          </BaseButton>
-          {loading && (
-            <CircularProgress
-              size={28}
-              title="Loading..."
-              sx={{
-                color: BLUE,
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                marginTop: '-12px',
-                marginLeft: '-12px',
-              }}
-            />
+            <DialogTitle id="alert-dialog-title">
+              Validator Error
+            </DialogTitle>
+            <DialogContent sx={{ width: '700px' }}>
+              <DialogContentText id="alert-dialog-description" sx={{ paddingBottom: '30px' }}>
+                {error?.message}
+              </DialogContentText>
+              <TextField
+                sx={{ width: '100%', backgroundColor: LIGHTER_GRAY, marginBottom: '30px' }}
+                label="Fix suggestion:"
+                defaultValue={error?.fixSuggestion || 'Please send the detailed error message below to help@hubmapconsortium.org with a subject "Metadata Validator Error".'}
+                multiline
+                maxRows={8}
+                disabled
+              />
+              <TextField
+                sx={{ width: '100%', backgroundColor: LIGHTER_GRAY }}
+                label="Detailed error message:"
+                defaultValue={`Status: ${error?.statusInfo}\nCause: ${error?.cause}`}
+                multiline
+                maxRows={8}
+                disabled
+              />
+            </DialogContent>
+            <DialogActions>
+              <BaseButton onClick={handleDialogClose} autoFocus>Close</BaseButton>
+            </DialogActions>
+          </Dialog>
+        </InputArea>
+        <CustomWidthTooltip
+          title={(
+            <Typography fontSize={15}>
+              Our validator tool collects data for research, performance evaluation, and
+              capability improvement purposes. We want to emphasize that no personal data
+              or the actual data you submit is ever collected. Our data collection is
+              restricted to the validation reporting and session IDs, all of which are
+              instrumental in our research study, tool evaluation, and enhancement efforts.
+              By clicking the &apos;START VALIDATING&apos; button above, you agree to our
+              data collection privacy policy. If you have any concerns or questions regarding
+              this data collection, please feel free to contact us.
+            </Typography>
           )}
-        </SubmitBox>
-        <Dialog
-          open={openDialog}
-          onClose={handleDialogClose}
-          maxWidth="lg"
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
+          width="800px"
+          placement="top"
         >
-          <DialogTitle id="alert-dialog-title">
-            Validator Error
-          </DialogTitle>
-          <DialogContent sx={{ width: '700px' }}>
-            <DialogContentText id="alert-dialog-description" sx={{ paddingBottom: '30px' }}>
-              {error?.message}
-            </DialogContentText>
-            <TextField
-              sx={{ width: '100%', backgroundColor: LIGHTER_GRAY, marginBottom: '30px' }}
-              label="Fix suggestion:"
-              defaultValue={error?.fixSuggestion || 'Please send the detailed error message below to help@hubmapconsortium.org with a subject "Metadata Validator Error".'}
-              multiline
-              maxRows={8}
-              disabled
-            />
-            <TextField
-              sx={{ width: '100%', backgroundColor: LIGHTER_GRAY }}
-              label="Detailed error message:"
-              defaultValue={`Status: ${error?.statusInfo}\nCause: ${error?.cause}`}
-              multiline
-              maxRows={8}
-              disabled
-            />
-          </DialogContent>
-          <DialogActions>
-            <BaseButton onClick={handleDialogClose} autoFocus>Close</BaseButton>
-          </DialogActions>
-        </Dialog>
-      </InputArea>
+          <Button
+            component="div"
+            sx={{ position: 'fixed', left: '50%', bottom: 10, margin: '0 auto', transform: 'translate(-50%,-50%)', color: BLACK }}
+          >
+            Data Collection Disclaimer
+          </Button>
+        </CustomWidthTooltip>
+      </Stack>
     </HomeContainer>
   );
 };
