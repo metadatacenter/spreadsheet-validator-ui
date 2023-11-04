@@ -79,7 +79,7 @@ const Navbar = ({ inputFileName }) => {
             {inputFileName}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <LightTooltip title={<Typography sx={{ fontSize: '1.4em' }}>New validation</Typography>} placement="left">
+          <LightTooltip title={<Typography sx={{ fontSize: '1.4em' }}>Start a new validation</Typography>} placement="left">
             <NewButton sx={{ marginRight: '10px' }} variant="outlined" onClick={() => navigate('..')}>
               <PostAddIcon />
             </NewButton>
