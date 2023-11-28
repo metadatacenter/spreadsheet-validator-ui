@@ -397,7 +397,7 @@ const Home = ({ setAppData }) => {
             component="div"
             sx={{ position: 'fixed', left: '50%', bottom: 10, margin: '0 auto', transform: 'translate(-50%,-50%)', color: BLACK }}
           >
-            Data Collection Disclaimer
+            Data Privacy Policy
           </Button>
         </CustomWidthTooltip>
       </Stack>
