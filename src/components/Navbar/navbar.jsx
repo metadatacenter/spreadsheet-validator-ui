@@ -11,7 +11,7 @@ import AdherenceErrorNavMenu from '../NavMenu/AdherenceErrorNavMenu';
 import OverviewNavMenu from '../NavMenu/OverviewNavMenu';
 import { hasCompletenessErrors, hasAdherenceErrors, isRepairCompleted } from '../../helpers/app-utils';
 import { BLACK, GREEN, WHITE } from '../../constants/Color';
-import { XLSX, TSV } from '../../constants/MimeType';
+import { XLSX, TSV, CSV, TXT } from '../../constants/MimeType';
 
 const LightTooltip = styled(({ className, ...props }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
@@ -93,9 +93,16 @@ const Navbar = ({ inputFileName }) => {
       </Container>
       <Collapse direction="down" in={!bannerhide} mountOnEnter unmountOnExit>
         <Banner>
-          {isInputSpreadsheetValid && inputFileMetadata.type === XLSX && 'No error found. Please get the TSV format using the download button and upload it to the'}
-          {isInputSpreadsheetValid && inputFileMetadata.type === TSV && 'No error found. Please proceed to upload the spreadsheet to the'}
-          {!isInputSpreadsheetValid && 'Fix completed. Download the repaired spreadsheet in TSV format and proceed to upload it to the'}
+          {isInputSpreadsheetValid
+            && (inputFileMetadata.type === XLSX
+              || inputFileMetadata.type === CSV
+              || inputFileMetadata.type === TXT)
+            && 'No error found. Ensure your file is in tab-separated format using the "Download" button below and then upload it to the'}
+          {isInputSpreadsheetValid
+            && inputFileMetadata.type === TSV
+            && 'No error found. Please proceed with uploading your file to the'}
+          {!isInputSpreadsheetValid
+            && 'Fix completed. Download the repaired spreadsheet using the "Download" button below and upload the file to the'}
           &nbsp;
           <Link
             href="http://ingest.hubmapconsortium.org"
