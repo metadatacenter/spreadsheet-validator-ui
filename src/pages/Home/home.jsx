@@ -147,25 +147,25 @@ const Home = ({ setAppData }) => {
       mainSheet = workbook.Sheets[sheetName];
     }
     if (!mainSheet) {
-      throwInvalidFileError('Invalid metadata Excel file.', 'The [MAIN] sheet is missing.');
+      throwInvalidFileError('Invalid input metadata file.', 'The [MAIN] sheet is missing.');
     }
     const dt = utils.sheet_to_json(mainSheet, { defval: '' });
     if (!dt || dt.length === 0) {
-      throwInvalidFileError('Invalid metadata Excel file.', 'The [MAIN] sheet is empty.');
+      throwInvalidFileError('Invalid input metadata file.', 'The [MAIN] sheet is empty.');
     }
     setData(dt);
 
     const metadataSheet = workbook.Sheets[METADATA_SHEET];
     if (!metadataSheet) {
-      throwInvalidFileError('Invalid metadata Excel file.', 'The [.metadata] sheet is missing.');
+      throwInvalidFileError('Invalid input metadata file.', 'The [.metadata] sheet is missing.');
     }
     const md = utils.sheet_to_json(metadataSheet, { defval: '' });
     if (!md || md.length === 0) {
-      throwInvalidFileError('Invalid metadata Excel file.', 'The [.metadata] sheet is empty.');
+      throwInvalidFileError('Invalid input metadata file.', 'The [.metadata] sheet is empty.');
     }
     const iri = md[0][CEDAR_TEMPLATE_IRI];
     if (!iri) {
-      throwInvalidFileError('Invalid metadata Excel file.', 'The schema IRI is missing in the [.metadata] sheet.');
+      throwInvalidFileError('Invalid input metadata file.', 'The schema IRI is missing in the [.metadata] sheet.');
     }
     setTemplateIri(iri);
 
@@ -214,12 +214,12 @@ const Home = ({ setAppData }) => {
       transform: defval,
     });
     if (!parsed.data || parsed.data.length === 0) {
-      throwInvalidFileError('Invalid metadata TSV file.', 'The file is empty.');
+      throwInvalidFileError('Invalid input metadata file.', 'The file is empty.');
     }
     setData(parsed.data);
     const schemaId = parsed.data[0].metadata_schema_id;
     if (!schemaId) {
-      throwInvalidFileError('Invalid metadata TSV file.', 'The metadata_schema_id is missing in the file.');
+      throwInvalidFileError('Invalid input metadata file.', 'The metadata_schema_id is missing in the file.');
     }
     setTemplateIri(`https://repo.metadatacenter.org/templates/${schemaId}`);
   };
