@@ -94,7 +94,7 @@ WorkspaceContainer.propTypes = {
       inputFileMetadata: PropTypes.shape({
         name: PropTypes.string.isRequired,
       }).isRequired,
-    }).isRequired,
+    }),
   }).isRequired,
 };
 
