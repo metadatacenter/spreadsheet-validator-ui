@@ -13,7 +13,7 @@ import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpe
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { CEDAR_TEMPLATE_IRI, MAIN_SHEET, METADATA_SHEET } from '../../constants/Sheet';
 import { BLACK, BLUE, LIGHTER_GRAY, WHITE, LIGHT_YELLOW } from '../../constants/Color';
-import { TSV, TXT, XLSX } from '../../constants/MimeType';
+import { CSV, TSV, TXT, XLSX } from '../../constants/MimeType';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -190,7 +190,7 @@ const Home = ({ setAppData }) => {
     reader.readAsText(file);
   });
 
-  const parseMetadataInTsv = (content) => {
+  const parseMetadataInSeparatedValue = (content) => {
     const FLOAT = /^\s*-?(\d*\.?\d+|\d+\.?\d*)(e[-+]?\d+)?\s*$/i;
     const defval = (value) => {
       let output = value;
@@ -205,7 +205,14 @@ const Home = ({ setAppData }) => {
       }
       return output;
     };
-    const parsed = Papa.parse(content, { header: true, delimiter: '\t', dynamicTyping: false, skipEmptyLines: true, transform: defval });
+    const parsed = Papa.parse(content, {
+      header: true,
+      delimiter: '', // auto-detect
+      newline: '', // auto-detect
+      dynamicTyping: false,
+      skipEmptyLines: true,
+      transform: defval,
+    });
     if (!parsed.data || parsed.data.length === 0) {
       throwInvalidFileError('Invalid metadata TSV file.', 'The file is empty.');
     }
@@ -226,9 +233,9 @@ const Home = ({ setAppData }) => {
     if (file) {
       setEnabled(true);
       const fileType = file.type;
-      if (fileType === TSV || fileType === TXT) {
+      if (fileType === CSV || fileType === TSV || fileType === TXT) {
         readTextFile(file)
-          .then(parseMetadataInTsv)
+          .then(parseMetadataInSeparatedValue)
           .catch(openErrorDialog);
       } else if (fileType === XLSX) {
         readBinaryFile(file)
@@ -286,7 +293,7 @@ const Home = ({ setAppData }) => {
     setOpenDialog(false);
   };
 
-  const fileTypes = ['xlsx', 'tsv', 'txt'];
+  const fileTypes = ['xlsx', 'csv', 'tsv', 'txt'];
   return (
     <HomeContainer>
       <Stack direction="column">
