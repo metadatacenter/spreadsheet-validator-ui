@@ -13,7 +13,7 @@ import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpe
 import { OVERVIEW_PATH } from '../../constants/Router';
 import { CEDAR_TEMPLATE_IRI, MAIN_SHEET, METADATA_SHEET } from '../../constants/Sheet';
 import { BLACK, BLUE, LIGHTER_GRAY, WHITE, LIGHT_YELLOW } from '../../constants/Color';
-import { TSV, XLSX } from '../../constants/MimeType';
+import { TSV, TXT, XLSX } from '../../constants/MimeType';
 
 const HomeContainer = styled(Container)({
   display: 'flex',
@@ -226,7 +226,7 @@ const Home = ({ setAppData }) => {
     if (file) {
       setEnabled(true);
       const fileType = file.type;
-      if (fileType === TSV) {
+      if (fileType === TSV || fileType === TXT) {
         readTextFile(file)
           .then(parseMetadataInTsv)
           .catch(openErrorDialog);
@@ -286,7 +286,7 @@ const Home = ({ setAppData }) => {
     setOpenDialog(false);
   };
 
-  const fileTypes = ['xlsx', 'tsv'];
+  const fileTypes = ['xlsx', 'tsv', 'txt'];
   return (
     <HomeContainer>
       <Stack direction="column">
