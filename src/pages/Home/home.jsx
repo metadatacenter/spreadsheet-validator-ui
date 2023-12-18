@@ -205,7 +205,7 @@ const Home = ({ setAppData }) => {
       }
       return output;
     };
-    const parsed = Papa.parse(content, { header: true, delimiter: '\t', dynamicTyping: false, transform: defval });
+    const parsed = Papa.parse(content, { header: true, delimiter: '\t', dynamicTyping: false, skipEmptyLines: true, transform: defval });
     if (!parsed.data || parsed.data.length === 0) {
       throwInvalidFileError('Invalid metadata TSV file.', 'The file is empty.');
     }
