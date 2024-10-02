@@ -40,12 +40,17 @@ const checkInvalidValueFormatError = (reportItem) => (
   reportItem.errorType === 'invalidValueFormat'
 );
 
+const checkInvalidSchemaIdError = (reportItem) => (
+  reportItem.errorType === 'invalidSchemaId'
+);
+
 const checkAdherenceError = (reportItem) => (
   checkNotStandardTermError(reportItem)
   || checkNotNumberTypeError(reportItem)
   || checkNotStringTypeError(reportItem)
   || checkInvalidUrlError(reportItem)
   || checkInvalidValueFormatError(reportItem)
+  || checkInvalidSchemaIdError(reportItem)
 );
 
 export const hasCompletenessErrors = (reportingData) => (
@@ -237,12 +242,28 @@ const getInvalidValueFormatButtonItemData = (errorSummary, patches) => {
   return null;
 };
 
+const getInvalidSchemaIdButtonItemData = (errorSummary, patches) => {
+  const filteredSummary = errorSummary.filter(
+    (reportItem) => checkInvalidSchemaIdError(reportItem),
+  );
+  if (filteredSummary.length > 0) {
+    return {
+      errorId: 'invalid-schema-id-error',
+      errorType: 'invalidSchemaId',
+      errorCount: countRemainingErrorsFromErrorSummary(filteredSummary, patches),
+      errorLocation: null,
+    };
+  }
+  return null;
+};
+
 export const generateAdherenceErrorStatusList = (errorSummary, patches) => [
   getNotStandardTermButtonItemData(errorSummary, patches),
   getNotNumberTypeButtonItemData(errorSummary, patches),
   getNotStringTypeButtonItemData(errorSummary, patches),
   getInvalidUrlButtonItemData(errorSummary, patches),
   getInvalidValueFormatButtonItemData(errorSummary, patches),
+  getInvalidSchemaIdButtonItemData(errorSummary, patches),
 ].filter(
   (item) => item !== null,
 );

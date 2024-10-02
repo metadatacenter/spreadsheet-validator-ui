@@ -77,7 +77,8 @@ export const getAdherenceErrorReport = (reporting) => (
       || reportItem.errorType === 'notNumberType'
       || reportItem.errorType === 'notStringType'
       || reportItem.errorType === 'invalidUrl'
-      || reportItem.errorType === 'invalidValueFormat',
+      || reportItem.errorType === 'invalidValueFormat'
+      || reportItem.errorType === 'invalidSchemaId',
   )
 );
 
