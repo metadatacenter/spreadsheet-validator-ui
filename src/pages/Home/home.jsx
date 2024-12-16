@@ -7,7 +7,6 @@ import { read, utils } from 'xlsx';
 import Papa from 'papaparse';
 import Container from '../../styles/Container';
 import BaseButton from '../../styles/BaseButton';
-import logo from '../../logo.svg';
 import './home.css';
 import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpers/data-utils';
 import { OVERVIEW_PATH } from '../../constants/Router';
@@ -32,10 +31,7 @@ const LogoBox = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
   paddingBottom: '10px',
-  img: {
-    width: '600px',
-    marginTop: 'auto',
-  },
+  color: '#444E5B',
 });
 
 const TaglineBox = styled(Box)({
@@ -46,7 +42,7 @@ const TaglineBox = styled(Box)({
 const InputSection = styled(Box)({
   display: 'flex',
   justifyContent: 'center',
-  padding: '30px',
+  padding: '60px 30px 30px 30px',
 });
 
 const UploadBox = styled(Box)({
@@ -299,10 +295,10 @@ const Home = ({ setAppData }) => {
       <Stack direction="column">
         <InputArea>
           <LogoBox>
-            <img src={logo} alt="spreadsheet-validator-logo" />
+            <h1>CEDAR Metadata Spreadsheet Validator</h1>
           </LogoBox>
           <TaglineBox>
-            <h2>Upload and submit your spreadsheet file to validate the metadata records</h2>
+            <h2>Upload your spreadsheet file to validate the metadata records</h2>
           </TaglineBox>
           <InputSection>
             <FileUploader
@@ -329,7 +325,7 @@ const Home = ({ setAppData }) => {
               size="large"
               onClick={submitSpreadsheet}
               disabled={!enabled}
-              sx={{ padding: '12px 80px 12px 80px' }}
+              sx={{ padding: '12px 60px 12px 60px', marginTop: '0', borderRadius: '0px' }}
             >
               Start Validating
             </BaseButton>
