@@ -7,6 +7,7 @@ import { read, utils } from 'xlsx';
 import Papa from 'papaparse';
 import Container from '../../styles/Container';
 import BaseButton from '../../styles/BaseButton';
+import logo from '../../logo.jpg';
 import './home.css';
 import { getAdherenceErrorReport, getCompletenessErrorReport } from '../../helpers/data-utils';
 import { OVERVIEW_PATH } from '../../constants/Router';
@@ -29,6 +30,8 @@ const InputArea = styled(Box)({
 
 const LogoBox = styled(Box)({
   display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
   justifyContent: 'center',
   paddingBottom: '10px',
   color: '#444E5B',
@@ -295,6 +298,9 @@ const Home = ({ setAppData }) => {
       <Stack direction="column">
         <InputArea>
           <LogoBox>
+            <div>
+              <img style={{ width: '175px', display: 'block', margin: '0 auto' }} src={logo} alt="CEDAR-Logo" />
+            </div>
             <h1>CEDAR Metadata Spreadsheet Validator</h1>
           </LogoBox>
           <TaglineBox>
