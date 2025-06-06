@@ -19,7 +19,7 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",
     "react-dom": "^18.2.0",
-    "react-drag-drop-files": "^2.3.8",
+    "react-drag-drop-files": "^3.0.1",
     "react-filepond": "^7.1.2",
     "react-horizontal-stacked-bar-chart": "^8.15.2",
     "react-hotkeys-hook": "^4.0.4",
