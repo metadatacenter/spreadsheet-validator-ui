@@ -102,6 +102,21 @@ const validateSpreadsheet = async (spreadsheetData, cedarTemplateIri) => {
   return res;
 };
 
+const getFileTypeFromExtension = (extension) => {
+  switch (extension.toLowerCase()) {
+    case 'csv':
+      return CSV;
+    case 'tsv':
+      return TSV;
+    case 'txt':
+      return TXT;
+    case 'xlsx':
+      return XLSX;
+    default:
+      return '';
+  }
+};
+
 // eslint-disable-next-line react/prop-types
 const Home = ({ setAppData }) => {
   const [data, setData] = useState();
@@ -231,7 +246,9 @@ const Home = ({ setAppData }) => {
   const handleChange = (file) => {
     if (file) {
       setEnabled(true);
-      const fileType = file.type;
+      // Use file.type if available, otherwise fall back to extension-based detection
+      const fileExtension = file.name.split('.').pop() || 'unknown';
+      const fileType = file.type || getFileTypeFromExtension(fileExtension);
       if (fileType === CSV || fileType === TSV || fileType === TXT) {
         readTextFile(file)
           .then(parseMetadataInSeparatedValue)
@@ -240,11 +257,18 @@ const Home = ({ setAppData }) => {
         readBinaryFile(file)
           .then(parseMetadataInExcel)
           .catch(openErrorDialog);
+      } else {
+        // Throw error if file type is not supported
+        throwInvalidFileError(
+          'Unsupported file type.',
+          `The file extension '.${fileExtension}' is not supported. Please upload a file with one of the following extensions: .xlsx, .csv, .tsv, .txt`,
+        );
+        return;
       }
       setInputFileMetadata({
         name: file.name,
         size: file.size,
-        type: file.type,
+        type: fileType,
       });
     }
   };
